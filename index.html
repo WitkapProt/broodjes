@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>'t Baguetje Meerbeke – Broodjesbestelling</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         :root {
             --primary: #7B3F10;
@@ -21,7 +19,11 @@
             --shadow: 0 2px 10px rgba(123,63,16,0.12);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -30,7 +32,7 @@
             min-height: 100vh;
         }
 
-        /* ── HEADER ── */
+        /* HEADER */
         header {
             background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
@@ -40,10 +42,20 @@
             z-index: 100;
             box-shadow: 0 3px 12px rgba(0,0,0,0.25);
         }
-        header h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.3px; }
-        header p  { font-size: 0.75rem; opacity: 0.80; margin-top: 2px; }
 
-        /* ── NAME / IDENTITY BAR ── */
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        header p {
+            font-size: 0.75rem;
+            opacity: 0.80;
+            margin-top: 2px;
+        }
+
+        /* NAME/IDENTITY BAR */
         .name-bar {
             background: white;
             padding: 12px 16px;
@@ -52,6 +64,7 @@
             flex-direction: column;
             gap: 8px;
         }
+
         .name-bar-title {
             font-weight: 800;
             font-size: 0.82rem;
@@ -59,13 +72,16 @@
             text-transform: uppercase;
             letter-spacing: 0.4px;
         }
+
         .name-bar-row {
             display: flex;
             gap: 8px;
             align-items: center;
             flex-wrap: wrap;
         }
-        .name-bar select, .name-bar input {
+
+        .name-bar select,
+        .name-bar input {
             flex: 1;
             min-width: 140px;
             padding: 9px 12px;
@@ -78,11 +94,17 @@
             color: var(--text);
             font-family: inherit;
         }
-        .name-bar select:focus, .name-bar input:focus {
+
+        .name-bar select:focus,
+        .name-bar input:focus {
             border-color: var(--primary);
             background: white;
         }
-        .name-bar select { cursor: pointer; }
+
+        .name-bar select {
+            cursor: pointer;
+        }
+
         .name-bar .field-group {
             display: flex;
             flex-direction: column;
@@ -90,32 +112,39 @@
             min-width: 140px;
             gap: 2px;
         }
+
         .name-bar .field-label {
             font-size: 0.72rem;
             font-weight: 600;
             color: var(--muted);
             padding-left: 2px;
         }
+
         .name-bar input.auto-filled {
             background: #F0FAF0;
             border-color: #A8D5A2;
             color: #2E6E28;
         }
 
-        /* ── TABS ── */
+        /* TABS */
         .tabs-wrap {
             background: white;
             border-bottom: 2px solid var(--border);
             overflow-x: auto;
             scrollbar-width: none;
         }
-        .tabs-wrap::-webkit-scrollbar { display: none; }
+
+        .tabs-wrap::-webkit-scrollbar {
+            display: none;
+        }
+
         .tabs {
             display: flex;
             gap: 6px;
             padding: 10px 14px;
             width: max-content;
         }
+
         .tab {
             padding: 7px 14px;
             border: 2px solid var(--border);
@@ -128,15 +157,22 @@
             white-space: nowrap;
             transition: all 0.18s;
         }
+
         .tab.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
         }
 
-        /* ── MENU SECTION ── */
-        .section { display: none; padding: 14px 14px 6px; }
-        .section.active { display: block; }
+        /* MENU SECTION */
+        .section {
+            display: none;
+            padding: 14px 14px 6px;
+        }
+
+        .section.active {
+            display: block;
+        }
 
         .section-title {
             font-size: 1rem;
@@ -158,7 +194,11 @@
             line-height: 1.4;
         }
 
-        .items-list { display: flex; flex-direction: column; gap: 7px; }
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
 
         .item-card {
             background: white;
@@ -170,33 +210,43 @@
             box-shadow: var(--shadow);
             gap: 10px;
         }
-        .item-text { flex: 1; min-width: 0; }
+
+        .item-text {
+            flex: 1;
+            min-width: 0;
+        }
+
         .item-name {
             font-weight: 700;
             font-size: 0.82rem;
             color: var(--primary);
             line-height: 1.25;
         }
+
         .item-desc {
             font-size: 0.73rem;
             color: var(--muted);
             margin-top: 2px;
             line-height: 1.3;
         }
+
         .item-price {
             font-weight: 800;
             color: var(--primary);
             font-size: 0.88rem;
             white-space: nowrap;
         }
+
         .item-ctrl {
             display: flex;
             align-items: center;
             gap: 6px;
             flex-shrink: 0;
         }
+
         .qbtn {
-            width: 28px; height: 28px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             border: 2px solid var(--primary);
             background: white;
@@ -204,24 +254,36 @@
             font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.12s;
             line-height: 1;
             padding: 0;
         }
-        .qbtn:active, .qbtn.has-qty { background: var(--primary); color: white; }
+
+        .qbtn:active,
+        .qbtn.has-qty {
+            background: var(--primary);
+            color: white;
+        }
+
         .qty-num {
             font-weight: 800;
             min-width: 18px;
             text-align: center;
             font-size: 0.9rem;
         }
-        .qty-num.positive { color: var(--primary); }
 
-        /* Extra section (supplements + vrije bestelling) */
+        .qty-num.positive {
+            color: var(--primary);
+        }
+
+        /* EXTRA SECTION */
         .extra-section {
             padding: 14px 14px 100px;
         }
+
         .custom-card {
             background: white;
             border: 2px dashed var(--border);
@@ -229,6 +291,7 @@
             padding: 14px;
             margin-top: 4px;
         }
+
         .custom-card label {
             font-weight: 700;
             font-size: 0.88rem;
@@ -236,6 +299,7 @@
             display: block;
             margin-bottom: 8px;
         }
+
         .custom-card textarea {
             width: 100%;
             padding: 10px;
@@ -249,9 +313,12 @@
             transition: border-color 0.2s;
             color: var(--text);
         }
-        .custom-card textarea:focus { border-color: var(--primary); }
 
-        /* ── CART FAB ── */
+        .custom-card textarea:focus {
+            border-color: var(--primary);
+        }
+
+        /* CART FAB */
         #cartFab {
             position: fixed;
             bottom: 20px;
@@ -271,7 +338,11 @@
             gap: 8px;
             transition: transform 0.12s;
         }
-        #cartFab:active { transform: scale(0.95); }
+
+        #cartFab:active {
+            transform: scale(0.95);
+        }
+
         .badge {
             background: #E53935;
             color: white;
@@ -281,16 +352,20 @@
             font-weight: 800;
         }
 
-        /* ── MODALS ── */
+        /* MODALS */
         .overlay {
-            position: fixed; inset: 0;
+            position: fixed;
+            inset: 0;
             background: rgba(0,0,0,0.48);
             z-index: 300;
             display: none;
             align-items: flex-end;
             justify-content: center;
         }
-        .overlay.open { display: flex; }
+
+        .overlay.open {
+            display: flex;
+        }
 
         .sheet {
             background: white;
@@ -302,6 +377,7 @@
             flex-direction: column;
             overflow: hidden;
         }
+
         .sheet-head {
             background: var(--primary);
             color: white;
@@ -311,19 +387,34 @@
             align-items: center;
             flex-shrink: 0;
         }
-        .sheet-head h2 { font-size: 1.05rem; }
-        .xbtn {
-            background: none; border: none; color: white;
-            font-size: 1.4rem; cursor: pointer; padding: 0; line-height: 1;
+
+        .sheet-head h2 {
+            font-size: 1.05rem;
         }
-        .sheet-body { flex: 1; overflow-y: auto; padding: 16px; }
+
+        .xbtn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .sheet-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
         .sheet-foot {
             padding: 14px 18px;
             border-top: 2px solid var(--border);
             flex-shrink: 0;
         }
 
-        /* Cart sheet */
+        /* CART SHEET */
         .cart-line {
             display: flex;
             justify-content: space-between;
@@ -332,11 +423,35 @@
             border-bottom: 1px solid var(--border);
             gap: 10px;
         }
-        .cart-line-info { flex: 1; }
-        .cart-line-name { font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
-        .cart-line-sub  { font-size: 0.75rem; color: var(--muted); margin-top: 1px; }
-        .cart-line-price { font-weight: 800; color: var(--primary); white-space: nowrap; font-size: 0.9rem; }
-        .cart-empty-msg { text-align: center; padding: 40px; color: var(--muted); }
+
+        .cart-line-info {
+            flex: 1;
+        }
+
+        .cart-line-name {
+            font-size: 0.86rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .cart-line-sub {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .cart-line-price {
+            font-weight: 800;
+            color: var(--primary);
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        .cart-empty-msg {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
 
         .total-row {
             display: flex;
@@ -345,6 +460,7 @@
             font-weight: 800;
             margin-bottom: 14px;
         }
+
         .main-btn {
             display: block;
             width: 100%;
@@ -360,12 +476,25 @@
             text-decoration: none;
             transition: background 0.15s;
         }
-        .main-btn:active { background: var(--primary-dark); }
-        .main-btn.green { background: var(--green); }
-        .main-btn.green:active { background: #1DA851; }
 
-        /* Payment sheet */
-        .pay-sheet-body { padding: 16px; overflow-y: auto; max-height: calc(92vh - 60px); }
+        .main-btn:active {
+            background: var(--primary-dark);
+        }
+
+        .main-btn.green {
+            background: var(--green);
+        }
+
+        .main-btn.green:active {
+            background: #1DA851;
+        }
+
+        /* PAYMENT SHEET */
+        .pay-sheet-body {
+            padding: 16px;
+            overflow-y: auto;
+            max-height: calc(92vh - 60px);
+        }
 
         .qr-block {
             background: var(--bg);
@@ -375,7 +504,13 @@
             margin-bottom: 14px;
             border: 1px solid var(--border);
         }
-        .qr-block h3 { color: var(--primary); font-size: 0.95rem; margin-bottom: 12px; }
+
+        .qr-block h3 {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
         .qr-img-wrap {
             display: inline-block;
             background: white;
@@ -384,10 +519,27 @@
             box-shadow: var(--shadow);
             margin-bottom: 10px;
         }
-        #qrCanvas { display: block; }
-        #qrCanvas img, #qrCanvas canvas { display: block; }
-        .qr-amount { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
-        .qr-sub { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+        #qrCanvas {
+            display: block;
+        }
+
+        #qrCanvas img,
+        #qrCanvas canvas {
+            display: block;
+        }
+
+        .qr-amount {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .qr-sub {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
 
         .order-recap {
             background: var(--bg);
@@ -396,7 +548,14 @@
             margin-bottom: 14px;
             border: 1px solid var(--border);
         }
-        .order-recap h3 { font-size: 0.88rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+
+        .order-recap h3 {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
         .recap-line {
             display: flex;
             justify-content: space-between;
@@ -404,7 +563,11 @@
             padding: 3px 0;
             border-bottom: 1px solid var(--border);
         }
-        .recap-line:last-child { border: none; }
+
+        .recap-line:last-child {
+            border: none;
+        }
+
         .recap-total {
             display: flex;
             justify-content: space-between;
@@ -415,7 +578,12 @@
             border-top: 2px solid var(--border);
         }
 
-        .send-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+        .send-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
 
         .deadline-note {
             text-align: center;
@@ -433,6 +601,7 @@
             font-weight: 600;
             line-height: 1.4;
         }
+
         .closed-banner small {
             display: block;
             font-weight: 400;
@@ -441,735 +610,1307 @@
             opacity: 0.85;
         }
 
+        /* STEP INDICATOR */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 10px;
+            background: var(--bg);
+            border-radius: 10px;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .step-dot.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .step-dot.done {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .step-dot.pending {
+            background: var(--border);
+            color: var(--muted);
+        }
+
+        .step-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .step-label.muted {
+            color: var(--muted);
+        }
+
+        .step-arrow {
+            font-size: 1rem;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+
+        /* WARNING BOX for "must click bestellen" */
+        .warning-box {
+            background: #FFF3E0;
+            border: 2px solid #FF9800;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .warning-box .warning-icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .warning-box .warning-title {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #E65100;
+            margin-bottom: 4px;
+        }
+
+        .warning-box .warning-text {
+            font-size: 0.82rem;
+            color: #BF360C;
+            line-height: 1.4;
+        }
+
+        /* Pulsing bestelling button */
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5); }
+            50% { box-shadow: 0 0 0 8px rgba(76, 175, 80, 0); }
+        }
+
+        .main-btn.pulse {
+            animation: pulse-border 2s infinite;
+            background: #E65100;
+            font-size: 1.05rem;
+            padding: 16px;
+        }
+
+        .main-btn.pulse:active {
+            background: #BF360C;
+        }
+
+        /* ADMIN PANEL */
+        .admin-panel {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .admin-panel h2 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .admin-orders {
+            margin-bottom: 20px;
+        }
+
+        .admin-order-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .admin-order-card .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .admin-order-card .order-naam {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .admin-order-card .order-totaal {
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .admin-order-card .order-items {
+            font-size: 0.82rem;
+            color: var(--muted);
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+
+        .admin-order-card .order-delete {
+            background: #E53935;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .admin-add-form {
+            background: white;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .admin-add-form label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+            margin-top: 10px;
+        }
+
+        .admin-add-form label:first-child {
+            margin-top: 0;
+        }
+
+        .admin-add-form input,
+        .admin-add-form textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-family: inherit;
+            outline: none;
+            color: var(--text);
+        }
+
+        .admin-add-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .admin-add-form input:focus,
+        .admin-add-form textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .admin-result {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 16px;
+        }
+
+        .admin-result h3 {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .admin-result textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-family: inherit;
+            resize: vertical;
+            color: var(--text);
+        }
+
+        .admin-btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .admin-grand-total {
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
         @media (min-width: 540px) {
-            .items-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-            .sheet { border-radius: 20px; margin-bottom: 20px; }
-            .overlay { align-items: center; }
+            .items-list {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .sheet {
+                border-radius: 20px;
+                margin-bottom: 20px;
+            }
+
+            .overlay {
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- HEADER -->
+    <header>
+        <h1>🥖 't Baguetje Meerbeke</h1>
+        <p>Broodjesbestelling — bestel vóór maandag 13:00</p>
+    </header>
 
-<!-- ===== HEADER ===== -->
-<header>
-    <h1>🥖 't Baguetje Meerbeke</h1>
-    <p>Broodjesbestelling &mdash; bestel vóór maandag 13:00</p>
-</header>
-<div id="closedBanner" class="closed-banner" style="display:none;"></div>
+    <!-- CLOSED BANNER (hidden initially) -->
+    <div id="closedBanner" class="closed-banner" style="display: none;"></div>
 
-<!-- ===== NAAM ===== -->
-<div class="name-bar">
-    <div class="name-bar-title">👤 Wie ben jij?</div>
-    <div class="name-bar-row">
-        <div class="field-group">
-            <span class="field-label">Selecteer naam</span>
-            <select id="colleagueSelect" onchange="onSelectColleague()">
-                <option value="">— Kies jouw naam —</option>
-            </select>
-        </div>
-    </div>
-    <div class="name-bar-row" id="manualFields" style="display:none">
-        <div class="field-group">
-            <span class="field-label">Naam</span>
-            <input type="text" id="naam" placeholder="Jouw naam..." autocomplete="name">
-        </div>
-        <div class="field-group">
-            <span class="field-label">E-mail (voor bevestiging)</span>
-            <input type="email" id="emailVan" placeholder="jouw.email@..." autocomplete="email">
-        </div>
-    </div>
-</div>
+    <!-- ADMIN PANEL (hidden unless ?admin in URL) -->
+    <div id="adminPanel" style="display: none;">
+        <div class="admin-panel">
+            <h2>📋 Verzamelbestelling voor Baguetje</h2>
+            <p style="font-size:0.82rem;color:var(--muted);margin-bottom:14px;">Voeg hier alle bestellingen toe die je via mail/WhatsApp ontvangt. Genereer dan de verzamelmail voor 't Baguetje.</p>
 
-<!-- ===== TABS ===== -->
-<div class="tabs-wrap">
-    <div class="tabs" id="tabs"></div>
-</div>
-
-<!-- ===== MENU SECTIONS ===== -->
-<div id="sections"></div>
-
-<!-- ===== EXTRA / VRIJE BESTELLING ===== -->
-<div class="extra-section">
-    <div class="custom-card">
-        <label>✏️ Supplement of vrije bestelling</label>
-        <textarea id="vrij" placeholder="Bijv: meergranen baguette (+€0,50), extra saus, broodje in 2 gesneden, speciale wens..."></textarea>
-    </div>
-</div>
-
-<!-- ===== CART FAB ===== -->
-<button id="cartFab" onclick="openCart()">
-    🛒 Bestelling
-    <span class="badge" id="fabCount">0</span>
-</button>
-
-<!-- ===== CART OVERLAY ===== -->
-<div class="overlay" id="cartOverlay">
-    <div class="sheet">
-        <div class="sheet-head">
-            <h2>🛒 Mijn bestelling</h2>
-            <button class="xbtn" onclick="closeCart()">✕</button>
-        </div>
-        <div class="sheet-body" id="cartBody"></div>
-        <div class="sheet-foot">
-            <div class="total-row">
-                <span>Totaal:</span>
-                <span id="cartTotaal">€ 0,00</span>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+                <button class="main-btn" style="flex:1;padding:10px;font-size:0.88rem;" onclick="fetchOrdersFromSheet()">🔄 Vernieuw bestellingen</button>
             </div>
-            <button class="main-btn" onclick="openPayment()">Betalen &amp; doorsturen →</button>
-        </div>
-    </div>
-</div>
+            <div id="adminGrandTotal" class="admin-grand-total" style="display:none;"></div>
 
-<!-- ===== PAYMENT OVERLAY ===== -->
-<div class="overlay" id="payOverlay">
-    <div class="sheet" style="border-radius:20px 20px 0 0; max-height:92vh;">
-        <div class="sheet-head">
-            <h2>💳 Betaling &amp; bestelling</h2>
-            <button class="xbtn" onclick="closePayment()">✕</button>
-        </div>
-        <div class="pay-sheet-body" id="payBody"></div>
-    </div>
-</div>
+            <div id="adminOrders" class="admin-orders"></div>
 
-<script>
-// ─────────────────────────────────────────────
-//  ⚙️  CONFIGURATIE  ←  HIER AANPASSEN
-// ─────────────────────────────────────────────
-const CFG = {
-    // Ontvanger
-    email:    'louis.vanderschueren@involv-intranet.com',
-    whatsapp: '32496862705',
-    // Gesloten venster: maandag 13:00 → dinsdag 15:00
-    sluit_dag: 1,  sluit_uur: 13, sluit_min: 0,   // maandag 13:00
-    open_dag:  2,  open_uur:  15, open_min:  0,    // dinsdag 15:00
-
-    // Bankgegevens voor QR
-    iban:     'BE37733074971128',
-    naam_rek: 'Louis Vanderschueren',
-
-    // EmailJS — maak gratis account op emailjs.com en vul in:
-    ejs_public_key:           '1eTtP0z-hov4lZpGK',
-    ejs_service_id:           'service_n632xvc',
-    ejs_template_id:          'template_3mkhvuq',
-    ejs_confirm_template_id:  'template_fxxz3m4',
-};
-
-// ─────────────────────────────────────────────
-//  👥  COLLEGA'S  ←  NAMEN & EMAILS TOEVOEGEN
-// ─────────────────────────────────────────────
-const COLLEAGUES = [
-    // ── Management ──
-    { naam: 'Walter Van Hecke',       email: 'walter.vanhecke@involv-intranet.com' },
-    { naam: 'Tim Bogemans',           email: 'tim.bogemans@involv-intranet.com' },
-    // ── Marketing ──
-    { naam: 'Louis Vanderschueren',   email: 'louis.vanderschueren@involv-intranet.com' },
-    { naam: 'Anouk Marit',            email: 'anouk.marit@involv-intranet.com' },
-    { naam: 'Thy Tran',               email: 'Thy.Tran@involv-intranet.com' },
-    { naam: 'Pieter Lippens',         email: 'pieter.lippens@involv-intranet.com' },
-    // ── Sales ──
-    { naam: 'Magnus Van Driessche',   email: 'magnus.vandriessche@involv-intranet.com' },
-    { naam: 'Arnaud Deleu',           email: 'arnaud.deleu@involv-intranet.com' },
-    { naam: 'Nathalie Juwet',         email: 'nathalie.juwet@involv-intranet.com' },
-    // ── Development ──
-    { naam: 'Tommy Vanhee',           email: 'tommy.vanhee@involv-intranet.com' },
-    { naam: 'Senne De Wever',         email: 'senne.dewever@involv-intranet.com' },
-    { naam: 'Jim Houtman',            email: 'jim.houtman@involv-intranet.com' },
-    { naam: 'Elio Struyf',            email: 'Elio.Struyf@involv-intranet.com' },
-    { naam: 'Aman Tripathi',          email: 'aman.tripathi@involv-intranet.com' },
-    { naam: 'Dmitriy Van der Elst',   email: 'dmitriy.vanderelst@involv-intranet.com' },
-    { naam: 'Luna Heyman',            email: 'luna.heyman@involv-intranet.com' },
-    // ── Project ──
-    { naam: 'Lien Van Roij',          email: 'Lien.VanRoij@involv-intranet.com' },
-    { naam: 'Pascal Herreweghe',      email: 'pascal.herreweghe@involv-intranet.com' },
-    { naam: 'Davy Paeleman',          email: 'davy.paeleman@involv-intranet.com' },
-    { naam: 'David Sybers',           email: 'david.sybers@involv-intranet.com' },
-    { naam: 'Marijn Somers',          email: 'marijn.somers@involv-intranet.com' },
-    { naam: 'Jonas Van Obbergen',     email: 'jonas.vanobbergen@involv-intranet.com' },
-    { naam: 'Lars Nolmans',           email: 'lars.nolmans@involv-intranet.com' },
-    // ── Customer Success ──
-    { naam: 'Willem Sunaert',         email: 'willem.sunaert@involv-intranet.com' },
-    { naam: 'Nancy Lockkamper',       email: 'nancy.lockkamper@involv-intranet.com' },
-    // ── HR ──
-    { naam: 'Riet Van Dooren',        email: 'administration@CognIT.be' },
-];
-
-// ─────────────────────────────────────────────
-//  MENU DATA
-// ─────────────────────────────────────────────
-const MENU = [
-  { id:'warm', tab:'🔥 Warm', title:'Warme Broodjes – Provencette / Panini',
-    note: null,
-    items:[
-      {id:'w1', n:'Kaas – mozzarella – tomaat – kruiden', p:5.30},
-      {id:'w2', n:'Hesp – philadelphia – honing – kruiden – tomaat', p:5.80},
-      {id:'w3', n:'Kaas – brie – mozzarella – ananas – kruiden', p:5.80},
-      {id:'w4', n:'Gehaktbal – mozzarella – tomaat – martinosaus', p:6.00},
-      {id:'w5', n:'Gerookte hesp – mozzarella – tomaat – pesto', p:6.80},
-      {id:'w6', n:'Gerookte zalm – philadelphia – tomaat – kruiden', p:7.00},
-      {id:'w7', n:'Kaas – hesp – tomaat of ananas – kruiden', p:5.30},
-      {id:'w8', n:'Gehaktbal – gedroogde uitjes – 3 bicky sauzen', p:6.00},
-      {id:'w9', n:'Pizza Prosciutto', p:3.80},
-    ]},
-  { id:'vlees', tab:'🥩 Vlees', title:'Broodjes met Vlees',
-    note: null,
-    items:[
-      {id:'v1',  n:'BEATLE',       d:'gehaktbal – sla – tomaat – wortel – mayo', p:4.50},
-      {id:'v2',  n:'BOLLEKE',      d:'gehaktbal – augurk – verse ui – mayo & ketchup', p:4.50},
-      {id:'v3',  n:'BOLERO',       d:'gehaktbal – sla – zilverui – wortel – mayo & martinosaus', p:4.50},
-      {id:'v4',  n:'BOLUS',        d:'gehaktbal – verse ui – tuinkers – andalousesaus', p:4.50},
-      {id:'v5',  n:'BICKY',        d:'gehaktbal – augurk – gedroogde ui – 3 bicky sauzen', p:5.00},
-      {id:'v6',  n:'BALLEKE BACON',d:'gehaktbal – sneetjes bacon – gedroogde ui – cocktailsaus', p:5.00},
-      {id:'v7',  n:'VLEESSALADE',  d:'vleessalade – sla – tomaat – wortel', p:4.50},
-      {id:'v8',  n:'PITA PIKANT',  d:'pita pikant – sla – tomaat – wortel', p:4.50},
-      {id:'v9',  n:'BIKINI',       d:'préparé – augurk – gedroogde uitjes – 3 bicky sauzen', p:5.00},
-      {id:'v10', n:'CLUB',         d:'préparé – sla – tomaat – wortel – ei – mayo', p:4.50},
-      {id:'v11', n:'SUPER CLUB',   d:'préparé – sla – tomaat – wortel – ei – augurk – verse/zilverui – mayo', p:5.00},
-      {id:'v12', n:'MARTINO',      d:'préparé – augurk – verse ui – tomaat – martinosaus', p:4.50},
-      {id:'v13', n:'SUPER MARTINO',d:'préparé – augurk – verse ui – tomaat – sla – wortel – martinosaus', p:5.00},
-      {id:'v14', n:'SPECIAL',      d:'hesp – sla – tomaat – wortel – ei – mayo', p:4.30},
-      {id:'v15', n:'SUPER SPECIAL',d:'hesp – sla – tomaat – wortel – ei – augurk – verse/zilverui – mayo', p:4.80},
-      {id:'v16', n:'SALAMI',       d:'salami – sla – tomaat – wortel – mayo', p:4.50},
-      {id:'v17', n:'ROSBIEF',      d:'rosbief – sla – tomaat – wortel – mayo – peper', p:5.30},
-      {id:'v18', n:'ARGENTEUIL',   d:'rosbief – zilverui – augurk – mosterd – peper', p:5.30},
-      {id:'v19', n:'ITALIANO',     d:'gerookte hesp – tomaat – peper – basilicumolie', p:5.00},
-      {id:'v20', n:'PITA (warm)',   d:'pita vlees – groenten – saus naar keuze', p:5.00},
-      {id:'v21', n:'MEXICANO',     d:'mexicano – verse ui – mayo & ketchup', p:5.00},
-      {id:'v22', n:'MEXICANO CHEESE',   d:'mexicano – kaas – gedroogde ui – tomaat – sla – saus naar keuze', p:6.00},
-      {id:'v23', n:'MEXICANO MARTINO',  d:'mexicano – augurk – gedroogde ui – tomaat – martinosaus', p:6.00},
-      {id:'v24', n:'MEXICANO BRIE',     d:'mexicano – brie – gedroogde ui – sla – tomaat – saus naar keuze', p:6.50},
-      {id:'v25', n:'MEXICANO FRIET',    d:'mexicano – friet – saus naar keuze', p:6.50},
-      {id:'v26', n:'WARM BAL GESMOLTEN KAAS', d:'augurk – zilverui – sla – wortel – mayo & ketchup', p:5.50},
-      {id:'v27', n:'OMELET MET SPEK',   d:'sla – tomaat – wortel – mayo', p:4.80},
-      {id:'v28', n:'GRAND-MERE',        d:'huisgemaakt balleke – sla – tomaat – wortel – mayo', p:5.30},
-      {id:'v29', n:'HAMBURGER',         d:'hamburger – gedroogde ui – saus naar keuze', p:5.00},
-      {id:'v30', n:'HAMBURGER + GROENTEN', d:'hamburger – sla – tomaat – wortel – saus naar keuze', p:5.50},
-      {id:'v31', n:'HAMBURGER FRIET',   d:'hamburger – friet – saus naar keuze', p:6.50},
-      {id:'v32', n:'JOPPIE',            d:'gehaktbal – gedroogde ui – joppie-saus', p:5.00},
-      {id:'v33', n:'BOMMEKE',           d:'gehaktbal – preparé – sneetjes kaas – 3 bicky sauzen – gedroogde ui', p:6.00},
-    ]},
-  { id:'kaas', tab:'🧀 Kaas', title:'Broodjes met Kaas',
-    note: null,
-    items:[
-      {id:'k1',  n:'ROMA',               d:'mozzarella – pesto – zongedroogde tomaten – peper', p:5.30},
-      {id:'k2',  n:'CHEESE',             d:'kaas – sla – tomaat – wortel – ei – mayo', p:4.30},
-      {id:'k3',  n:'SUPER CHEESE',       d:'kaas – sla – tomaat – wortel – ei – augurk – zilverui/verse ui – mayo', p:4.80},
-      {id:'k4',  n:'PHILADELPHIA',       d:'philadelphia – sla – tomaat – wortel', p:4.30},
-      {id:'k5',  n:'PHILADELPHIA VERSE UI', d:'philadelphia – verse ui – tomaat – peper – kruiden', p:4.50},
-      {id:'k6',  n:'BOURSIN',            d:'boursin – sla – tomaat – wortel', p:4.30},
-      {id:'k7',  n:'BRIE',               d:'brie – sla – tomaat – wortel – boter', p:5.00},
-      {id:'k8',  n:'BRIE HONING',        d:'brie – honing – tuinkers – peper – boter', p:5.30},
-      {id:'k9',  n:'SWEETY',             d:'brie – vruchtenconfituur – peper – boter – nootjes of rozijn', p:5.30},
-      {id:'k10', n:'MOZZARELLA',         d:'mozzarella – tomaat – basilicumolie – peper', p:5.00},
-    ]},
-  { id:'kaasv', tab:'🥪 Kaas & Vlees', title:'Broodjes met Kaas & Vlees',
-    note: null,
-    items:[
-      {id:'kv1',  n:'SMOS',        d:'kaas – hesp – sla – tomaat – wortel – ei – mayo', p:4.50},
-      {id:'kv2',  n:'SUPER SMOS',  d:'kaas – hesp – sla – tomaat – wortel – ei – augurk – ui/zilverui – mayo', p:5.00},
-      {id:'kv3',  n:'TWISTER',     d:'kaas – hesp – sla – wortel – ei – zilverui – cocktailsaus & mosterd', p:4.80},
-      {id:'kv4',  n:'TRICOLOR',    d:'kaas – hesp – salami – sla – tomaat – wortel – ei – mayo', p:4.80},
-      {id:'kv5',  n:'SUPER TRICOLOR', d:'kaas – hesp – salami – sla – tomaat – wortel – ei – augurk – ui/zilverui – mayo', p:5.30},
-      {id:'kv6',  n:'B-H-V',       d:'hesp – boursin – verse ui – tuinkers – peper', p:5.30},
-      {id:'kv7',  n:'MAISON',      d:'gerookte hesp – mozzarella – tomaat – basilicumolie – peper', p:5.50},
-      {id:'kv8',  n:'MAISON ZONGEDROOGDE', d:'gerookte hesp – mozzarella – zongedroogde tomaten – basilicumolie – peper', p:5.80},
-      {id:'kv9',  n:'MADONNA',     d:'gerookte hesp – brie – zongedroogde tomaten – tuinkers – balsamicocrème – peper', p:6.80},
-      {id:'kv10', n:'MEDITERAAN',  d:'gerookte hesp – zongedroogde tomaten – tuinkers – parmezaanschilfers – peper – basilicumolie', p:6.30},
-      {id:'kv11', n:'ARCHIDUC',    d:'rosbief – zongedroogde tomaten – tuinkers – parmezaanschilfers – peper – basilicumolie', p:6.50},
-      {id:'kv12', n:'TROPICAL',    d:'kaas – hesp – ananas – cocktailsaus', p:4.50},
-    ]},
-  { id:'kip', tab:'🍗 Kip', title:'Broodjes met Kip',
-    note: null,
-    items:[
-      {id:'ki1', n:'KIP CURRY',      d:'kip in currysaus – sla – tomaat – wortel', p:4.50},
-      {id:'ki2', n:'KIP HAWAI',      d:'kip in cocktailsaus – sla – tomaat – wortel', p:4.50},
-      {id:'ki3', n:'KIP SAMOERAï',   d:'kip in samoeraïsaus – sla – tomaat – wortel', p:4.50},
-      {id:'ki4', n:'KIPFILET',       d:'kipfilet – sla – tomaat – wortel – mayo', p:4.50},
-      {id:'ki5', n:'BAHAMA',         d:'kipfilet – sla – wortel – ananas – cocktailsaus', p:4.50},
-      {id:'ki6', n:'BOURSIN-KIP',    d:'kipfilet – boursin – tomaat – verse ui – kruiden – peper', p:5.00},
-      {id:'ki7', n:'WARME KIP',      d:'warme kippenblokjes – tuinkers – ananas – cocktailsaus', p:5.00},
-      {id:'ki8', n:'HOT CHICA',      d:'warme kippenblokjes – gedroogde ui – augurk – BBQ saus', p:5.00},
-      {id:'ki9', n:'TOSCAANSE KIP',  d:'warme kippenblokjes – gedroogde ui – wortel – rucola – toscaanse saus', p:5.50},
-    ]},
-  { id:'vis', tab:'🐟 Vis', title:'Broodjes met Vis',
-    note: null,
-    items:[
-      {id:'vi1',  n:'TONIJN',           d:'tonijnsalade – sla – tomaat – wortel', p:4.50},
-      {id:'vi2',  n:'TONIJN COCKTAIL',  d:'tonijn in cocktailsaus – sla – tomaat – wortel', p:4.50},
-      {id:'vi3',  n:'TONIJN PIKANT',    d:'tonijnpikant salade – sla – tomaat – wortel', p:4.50},
-      {id:'vi4',  n:'TONIJN PERZIK',    d:'tonijnsalade – schijfjes perzik', p:4.50},
-      {id:'vi5',  n:'TONIJNTINO',       d:'tonijnsalade – verse ui – tomaat – augurk – ansjovis – tabasco/martinosaus', p:4.80},
-      {id:'vi6',  n:'KRAB',             d:'surimisalade – sla – tomaat – wortel', p:4.80},
-      {id:'vi7',  n:'GEROOKTE ZALM',    d:'gerookte zalm – verse ui – cocktailsaus', p:5.80},
-      {id:'vi8',  n:'BOURSIN-ZALM',     d:'gerookte zalm – boursin – verse ui – tuinkers – peper', p:6.50},
-      {id:'vi9',  n:'V.I.P.',           d:'gerookte zalm – philadelphia – sla – tomaat – wortel – peper', p:6.50},
-      {id:'vi10', n:'MARYLIN',          d:'gerookte zalm – brie – zongedroogde tomaten – tuinkers – basilicumolie – peper – balsamicocrème', p:7.00},
-      {id:'vi11', n:'LIBERTAS',         d:'tonijnsalade – parmezaan – tuinkers – dressing', p:5.00},
-      {id:'vi12', n:'TMP',              d:'tonijnsalade – tomaat – verse ui – augurk – balleke – sneetjes kaas – ansjovis – martinosaus', p:6.00},
-    ]},
-  { id:'gezond', tab:'🥗 Gezond', title:'Broodjes Gezond',
-    note: '!! Gehakt enkel op donderdag en vrijdag !!',
-    items:[
-      {id:'ge1', n:'GEZOND',         d:'sla – tomaat – wortel – ei – augurk – mayo of dressing', p:4.00},
-      {id:'ge2', n:'SUPER GEZOND',   d:'sla – tomaat – wortel – ei – augurk – tuinkers – verse/zilverui – mayo of dressing', p:4.50},
-      {id:'ge3', n:'GEHAKT (do/vr)', d:'gehakt – sla – tomaat – wortel – saus naar keuze', p:5.30},
-      {id:'ge4', n:'GEHAKT PICKLES (do/vr)', d:'gehakt – pickles saus', p:5.00},
-    ]},
-  { id:'slaat', tab:'🥙 Slaatjes', title:'Slaatjes',
-    note: 'Basis: sla, wortel, tomaat, augurk, ei, zilverui, tuinkers, ananas, perzik, verse ui. Brood en saus inbegrepen.',
-    items:[
-      {id:'sl1', n:'VEGGIE',     d:'basis salade', p:8.00},
-      {id:'sl2', n:'TONIJN NATUUR', p:10.00},
-      {id:'sl3', n:'TONIJN MET PERZIK', p:10.00},
-      {id:'sl4', n:'VLEES',      d:'salami, hesp, kipfilet', p:10.00},
-      {id:'sl5', n:'KIPFILET',   d:'sneetjes of blokjes', p:10.00},
-      {id:'sl6', n:'GEROOKTE ZALM', p:12.00},
-      {id:'sl7', n:'GEROOKTE HESP', p:12.00},
-      {id:'sl8', n:'MOZZARELLA + ZONGEDROOGDE TOMATEN', p:10.00},
-    ]},
-  { id:'pasta', tab:'🍝 Pasta', title:'Pasta Bekers',
-    note: 'Pasta enkel op bestelling – doorgeven dag voordien vóór 14:00!',
-    items:[
-      {id:'pa1', n:'Bolognaise Medium', p:7.00},
-      {id:'pa2', n:'Bolognaise Large',  p:9.00},
-      {id:'pa3', n:'Extra potje kaas',  p:1.00},
-    ]},
-  { id:'soep', tab:'🍲 Soep', title:'Dagelijkse Verse Soep',
-    note: null,
-    items:[
-      {id:'so1', n:'Verse soep 0,5L + brood', p:4.50},
-    ]},
-  { id:'lekker', tab:'🍩 Zoet', title:'Lekkerbekjes & Zoetjes',
-    note: 'Ontbijtkoeken enkel op bestelling – doorgeven dag voordien vóór 14:00.',
-    items:[
-      {id:'le1', n:'Broodje Nutella', p:3.00},
-      {id:'le2', n:'Broodje Confituur', p:3.00},
-      {id:'le3', n:'Broodje Nutella + Kaas', p:4.00},
-      {id:'le4', n:'Rijsttaartje', p:3.00},
-      {id:'le5', n:'Worstenbroodje', p:3.00},
-      {id:'le6', n:'Chocoladekoek / Croissant', p:1.80},
-      {id:'le7', n:'Donut', p:2.00},
-      {id:'le8', n:'Muffin / Brownie', p:2.80},
-      {id:'le9', n:'Huisgemaakt balleke', p:3.00},
-      {id:'le10', n:'Warme suikerwafel', p:2.50},
-    ]},
-];
-
-// ─────────────────────────────────────────────
-//  STATE
-// ─────────────────────────────────────────────
-const cart = {}; // id → { n, d, p, qty }
-
-// ─────────────────────────────────────────────
-//  COLLEAGUE SELECTOR
-// ─────────────────────────────────────────────
-function buildColleagueSelect() {
-    const sel = document.getElementById('colleagueSelect');
-    COLLEAGUES.forEach((c, i) => {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = c.naam;
-        sel.appendChild(opt);
-    });
-    // Always add "Andere naam" option
-    const other = document.createElement('option');
-    other.value = 'other';
-    other.textContent = '✏️ Andere naam / e-mail...';
-    sel.appendChild(other);
-}
-
-function onSelectColleague() {
-    const sel   = document.getElementById('colleagueSelect');
-    const val   = sel.value;
-    const manual = document.getElementById('manualFields');
-
-    if (val === '') {
-        manual.style.display = 'none';
-        return;
-    }
-
-    manual.style.display = 'flex';
-    const naamEl  = document.getElementById('naam');
-    const emailEl = document.getElementById('emailVan');
-
-    if (val === 'other') {
-        naamEl.value  = '';
-        emailEl.value = '';
-        naamEl.className  = '';
-        emailEl.className = '';
-        naamEl.readOnly   = false;
-        emailEl.readOnly  = false;
-        naamEl.focus();
-    } else {
-        const c = COLLEAGUES[parseInt(val)];
-        naamEl.value  = c.naam;
-        emailEl.value = c.email;
-        naamEl.className  = 'auto-filled';
-        emailEl.className = 'auto-filled';
-        // Still editable — remove readonly so user can tweak if needed
-        naamEl.readOnly   = false;
-        emailEl.readOnly  = false;
-    }
-}
-
-function getIdentity() {
-    return {
-        naam:  (document.getElementById('naam')?.value  || '').trim(),
-        email: (document.getElementById('emailVan')?.value || '').trim(),
-    };
-}
-
-// ─────────────────────────────────────────────
-//  BUILD MENU
-// ─────────────────────────────────────────────
-function buildMenu() {
-    const tabsEl = document.getElementById('tabs');
-    const secEl  = document.getElementById('sections');
-
-    MENU.forEach((cat, i) => {
-        // Tab
-        const t = document.createElement('button');
-        t.className = 'tab' + (i === 0 ? ' active' : '');
-        t.textContent = cat.tab;
-        t.onclick = () => switchCat(cat.id);
-        tabsEl.appendChild(t);
-
-        // Section
-        const s = document.createElement('div');
-        s.id = 'sec-' + cat.id;
-        s.className = 'section' + (i === 0 ? ' active' : '');
-
-        let html = `<div class="section-title">${cat.title}</div>`;
-        if (cat.note) html += `<div class="note-box">⚠️ ${cat.note}</div>`;
-        html += '<div class="items-list">';
-
-        cat.items.forEach(item => {
-            const esc = (s) => (s||'').replace(/'/g, "\\'");
-            html += `
-            <div class="item-card">
-                <div class="item-text">
-                    <div class="item-name">${item.n}</div>
-                    ${item.d ? `<div class="item-desc">${item.d}</div>` : ''}
+            <div class="admin-add-form">
+                <label>Naam collega</label>
+                <input type="text" id="adminNaam" placeholder="bv. Tim Bogemans">
+                <label>Bestelling (1 item per lijn)</label>
+                <textarea id="adminItems" placeholder="bv.&#10;1x SMOS&#10;1x Verse soep 0,5L + brood"></textarea>
+                <label>Totaal (€)</label>
+                <input type="number" id="adminTotaal" placeholder="bv. 9.00" step="0.01" min="0">
+                <div class="admin-btn-row" style="margin-top:12px;">
+                    <button class="main-btn" style="flex:1;" onclick="adminAddOrder()">+ Bestelling toevoegen</button>
                 </div>
-                <div class="item-price">€ ${fmt(item.p)}</div>
-                <div class="item-ctrl">
-                    <button class="qbtn" onclick="dec('${item.id}')">−</button>
-                    <span class="qty-num" id="q-${item.id}">0</span>
-                    <button class="qbtn" onclick="inc('${item.id}','${esc(item.n)}','${esc(item.d||'')}',${item.p})">+</button>
-                </div>
-            </div>`;
-        });
-
-        html += '</div>';
-        s.innerHTML = html;
-        secEl.appendChild(s);
-    });
-}
-
-function switchCat(id) {
-    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', MENU[i].id === id));
-    document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'sec-' + id));
-    // Scroll tab into view
-    const idx = MENU.findIndex(m => m.id === id);
-    document.querySelectorAll('.tab')[idx]?.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'});
-}
-
-// ─────────────────────────────────────────────
-//  CART LOGIC
-// ─────────────────────────────────────────────
-function inc(id, n, d, p) {
-    if (!cart[id]) cart[id] = { n, d, p, qty: 0 };
-    cart[id].qty++;
-    refreshQty(id);
-    refreshFab();
-}
-function dec(id) {
-    if (!cart[id] || cart[id].qty === 0) return;
-    cart[id].qty--;
-    if (cart[id].qty === 0) delete cart[id];
-    refreshQty(id);
-    refreshFab();
-}
-function refreshQty(id) {
-    const el = document.getElementById('q-' + id);
-    if (!el) return;
-    const qty = cart[id]?.qty || 0;
-    el.textContent = qty;
-    el.className = 'qty-num' + (qty > 0 ? ' positive' : '');
-}
-function cartItems() { return Object.values(cart).filter(v => v.qty > 0); }
-function total()     { return cartItems().reduce((s, v) => s + v.p * v.qty, 0); }
-function itemCount() { return cartItems().reduce((s, v) => s + v.qty, 0); }
-function fmt(n)      { return n.toFixed(2).replace('.', ','); }
-
-function refreshFab() {
-    const n = itemCount();
-    const fab = document.getElementById('cartFab');
-    fab.style.display = n > 0 ? 'flex' : 'none';
-    document.getElementById('fabCount').textContent = n;
-    document.getElementById('cartTotaal').textContent = '€ ' + fmt(total());
-}
-
-// ─────────────────────────────────────────────
-//  CART MODAL
-// ─────────────────────────────────────────────
-function openCart() {
-    const items = cartItems();
-    const el = document.getElementById('cartBody');
-    if (items.length === 0) {
-        el.innerHTML = '<div class="cart-empty-msg">Nog geen items toegevoegd.<br>Kies iets uit het menu!</div>';
-    } else {
-        let html = '';
-        items.forEach(v => {
-            html += `<div class="cart-line">
-                <div class="cart-line-info">
-                    <div class="cart-line-name">${v.n}</div>
-                    <div class="cart-line-sub">${v.qty}x @ €${fmt(v.p)}</div>
-                </div>
-                <div class="cart-line-price">€ ${fmt(v.p * v.qty)}</div>
-            </div>`;
-        });
-        const vrij = document.getElementById('vrij').value.trim();
-        if (vrij) html += `<div class="cart-line"><div class="cart-line-info"><div class="cart-line-name">✏️ ${vrij}</div></div></div>`;
-        el.innerHTML = html;
-    }
-    document.getElementById('cartOverlay').classList.add('open');
-}
-function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
-
-// ─────────────────────────────────────────────
-//  PAYMENT MODAL
-// ─────────────────────────────────────────────
-function openPayment() {
-    if (!isBestellingOpen()) {
-        alert(`⛔ Bestellingen zijn gesloten.\n\nGesloten van ${DAGEN[CFG.sluit_dag]} ${CFG.sluit_uur}:00 tot ${DAGEN[CFG.open_dag]} ${CFG.open_uur}:00.\n\nWeer open: ${volgendeOpeningTekst()}`);
-        return;
-    }
-    const { naam, email: emailVan } = getIdentity();
-    if (!naam) {
-        alert('Selecteer eerst jouw naam bovenaan!');
-        closeCart();
-        document.getElementById('colleagueSelect').focus();
-        return;
-    }
-    if (itemCount() === 0) { alert('Je bestelling is leeg!'); return; }
-
-    const items = cartItems();
-    const tot   = total();
-    const vrij  = document.getElementById('vrij').value.trim();
-    const datum = new Date().toLocaleDateString('nl-BE');
-
-    // ── EPC/SEPA QR (werkt in KBC Mobile en alle Belgische bankapps) ──
-    const epcData = [
-        'BCD',          // Service Tag
-        '002',          // Version
-        '1',            // UTF-8
-        'SCT',          // SEPA Credit Transfer
-        '',             // BIC (optioneel, leeg = automatisch)
-        CFG.naam_rek,
-        CFG.iban,
-        'EUR' + tot.toFixed(2),
-        '',             // Purpose (leeg)
-        '',             // Structured reference (leeg)
-        'Broodje ' + naam + ' ' + datum,
-    ].join('\n');
-
-    // ── Order text ──
-    let orderTxt = items.map(v => `${v.qty}x ${v.n}${v.d ? ' ('+v.d+')' : ''} – €${fmt(v.p * v.qty)}`).join('\n');
-    if (vrij) orderTxt += '\n✏️ ' + vrij;
-
-    // ── Recap HTML ──
-    let recapHtml = items.map(v => `
-        <div class="recap-line">
-            <span>${v.qty}× ${v.n}</span>
-            <span style="font-weight:700">€ ${fmt(v.p * v.qty)}</span>
-        </div>`).join('');
-    if (vrij) recapHtml += `<div class="recap-line"><span>✏️ ${vrij}</span><span></span></div>`;
-    recapHtml += `<div class="recap-total"><span>Totaal</span><span>€ ${fmt(tot)}</span></div>`;
-
-    // ── Email ──
-    const subj  = encodeURIComponent(`Broodjesbestelling ${naam} – ${datum}`);
-    const body  = encodeURIComponent(
-        `Hallo Louis,\n\nBestelling van: ${naam}${emailVan ? ' <'+emailVan+'>' : ''}\nDatum: ${datum}\n\n${orderTxt}\n\nTotaal: €${tot.toFixed(2)}\n\nBetaald via Bancontact/Payconiq.\n\nGroeten,\n${naam}`
-    );
-    const mailHref = `mailto:${CFG.email}?subject=${subj}&body=${body}`;
-
-    // ── WhatsApp ──
-    const waTxt = encodeURIComponent(
-        `🥖 Broodjesbestelling\nNaam: ${naam}\nDatum: ${datum}\n\n${orderTxt}\n\nTotaal: €${tot.toFixed(2)} ✅ betaald via Payconiq`
-    );
-    const waHref = `https://wa.me/${CFG.whatsapp}?text=${waTxt}`;
-
-    document.getElementById('payBody').innerHTML = `
-        <div class="qr-block">
-            <h3>🏦 Betaal via KBC / bankapp</h3>
-            <div class="qr-img-wrap">
-                <div id="qrCanvas"></div>
             </div>
-            <div class="qr-amount">€ ${fmt(tot)}</div>
-            <div class="qr-sub">Scan met KBC Mobile of andere bankapp</div>
-            <div style="margin-top:10px;font-size:0.75rem;color:var(--muted)">
-                IBAN: <strong>${CFG.iban}</strong><br>
-                Mededeling: <strong>Broodje ${naam}</strong>
+
+            <div class="admin-btn-row">
+                <button class="main-btn" style="flex:1;" onclick="adminGenerateMail()">📧 Genereer verzamelmail</button>
+                <button class="main-btn green" style="flex:1;" onclick="adminCopyText()">📋 Kopieer tekst</button>
+            </div>
+
+            <div id="adminResult" class="admin-result" style="display:none;">
+                <h3>Verzamelbestelling</h3>
+                <textarea id="adminResultText" readonly></textarea>
+                <div class="admin-btn-row">
+                    <a id="adminMailtoLink" class="main-btn" style="flex:1;text-decoration:none;text-align:center;" target="_blank">📧 Open in mailprogramma</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN ORDERING UI (hidden in admin mode) -->
+    <div id="mainUI">
+        <!-- NAME / IDENTITY BAR -->
+        <div class="name-bar">
+            <div class="name-bar-title">👤 Wie ben jij?</div>
+            <div class="name-bar-row">
+                <select id="colleagueSelect" onchange="onSelectColleague()">
+                    <option value="">Selecteer naam — Kies jouw naam —</option>
+                </select>
+            </div>
+            <div id="manualFields" style="display: none; gap: 8px; flex-direction: column;">
+                <div class="field-group">
+                    <label class="field-label">Naam</label>
+                    <input type="text" id="naam" placeholder="Jouw naam">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">E-mail (voor bevestiging)</label>
+                    <input type="email" id="emailVan" placeholder="Jouw e-mailadres">
+                </div>
             </div>
         </div>
 
-        <div class="order-recap">
-            <h3>📋 Bestelling – ${naam}</h3>
-            ${recapHtml}
+        <!-- TABS -->
+        <div class="tabs-wrap">
+            <div class="tabs" id="tabs"></div>
         </div>
 
-        <div class="send-btns">
-            <button class="main-btn" id="sendMailBtn" onclick="sendOrderEmail()">📧 Bestelling bevestigen &amp; doorsturen</button>
-            <a href="${waHref}" target="_blank" class="main-btn green">💬 Doorsturen via WhatsApp</a>
+        <!-- MENU SECTIONS -->
+        <div id="sections"></div>
+
+        <!-- SUPPLEMENT / VRIJE BESTELLING SECTION -->
+        <div class="extra-section">
+            <div class="section-title">✏️ Supplement of vrije bestelling</div>
+            <div class="custom-card">
+                <label>Noteer hier aanvullende wensen (extra saus, geen tomaat, etc.):</label>
+                <textarea id="vrij" placeholder="Bijzonderheden..."></textarea>
+            </div>
         </div>
-        <div id="mailStatus" style="text-align:center;font-size:0.85rem;margin-top:6px;min-height:20px"></div>
+    </div>
 
-        <div class="deadline-note">
-            Bestellingen doorsturen vóór <strong>${CFG.deadline}</strong> &mdash; info@baguetjemeerbeke.be
-        </div>`;
+    <!-- CART FAB -->
+    <button id="cartFab" onclick="openCart()">
+        🛒 Mijn bestelling
+        <span class="badge"><span id="fabCount">0</span></span>
+    </button>
 
-    closeCart();
-    document.getElementById('payOverlay').classList.add('open');
+    <!-- CART MODAL OVERLAY -->
+    <div id="cartOverlay" class="overlay">
+        <div class="sheet">
+            <div class="sheet-head">
+                <h2>🛒 Mijn bestelling</h2>
+                <button class="xbtn" onclick="closeCart()">✕</button>
+            </div>
+            <div class="sheet-body" id="cartBody"></div>
+            <div class="sheet-foot">
+                <div class="total-row">
+                    <span>Totaal:</span>
+                    <span id="cartTotaal">€ 0,00</span>
+                </div>
+                <button class="main-btn" onclick="openPayment()">Betalen & doorsturen →</button>
+            </div>
+        </div>
+    </div>
 
-    // Genereer EPC/SEPA QR client-side na render
-    new QRCode(document.getElementById('qrCanvas'), {
-        text:         epcData,
-        width:        180,
-        height:       180,
-        colorDark:    '#000000',
-        colorLight:   '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M,
-    });
+    <!-- PAYMENT MODAL OVERLAY -->
+    <div id="payOverlay" class="overlay">
+        <div class="sheet">
+            <div class="sheet-head">
+                <h2>💳 Betaling & bestelling</h2>
+                <button class="xbtn" onclick="closePayment()">✕</button>
+            </div>
+            <div class="sheet-body pay-sheet-body" id="payBody"></div>
+        </div>
+    </div>
 
-    // Sla order op voor e-mail functie
-    window._pendingOrder = { naam, emailVan, orderTxt, tot, datum };
-}
-function closePayment() {
-    document.getElementById('payOverlay').classList.remove('open');
-    // Wis QR zodat hij opnieuw gegenereerd wordt bij volgende bestelling
-    const c = document.getElementById('qrCanvas');
-    if (c) c.innerHTML = '';
-}
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-// Sluit overlay bij klik buiten sheet
-['cartOverlay','payOverlay'].forEach(id => {
-    document.getElementById(id).addEventListener('click', function(e) {
-        if (e.target === this) this.classList.remove('open');
-    });
-});
+    <!-- EmailJS Library -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
 
-// ─────────────────────────────────────────────
-//  EMAIL (EmailJS — automatisch, geen mailapp)
-// ─────────────────────────────────────────────
-function sendOrderEmail() {
-    const btn    = document.getElementById('sendMailBtn');
-    const status = document.getElementById('mailStatus');
-    const o      = window._pendingOrder;
-    if (!o) return;
+    <!-- APPLICATION JAVASCRIPT -->
+    <script>
+        // ──────────────────────────────────────────
+        // CONFIG
+        // ──────────────────────────────────────────
+        const CFG = {
+            email: 'louis.vanderschueren@involv-intranet.com',
+            whatsapp: '32496862705',
+            sluit_dag: 1,
+            sluit_uur: 13,
+            sluit_min: 0,
+            open_dag: 2,
+            open_uur: 15,
+            open_min: 0,
+            iban: 'BE37733074971128',
+            naam_rek: 'Louis Vanderschueren',
+            ejs_public_key: '1eTtP0z-hov4lZpGK',
+            ejs_service_id: 'service_n632xvc',
+            ejs_template_id: 'template_3mkhvuq',
+            ejs_confirm_template_id: 'template_fxxz3m4',
+            baguetje_email: 'info@baguetjemeerbeke.be',
+            // ⬇️ Plak hier jouw Google Apps Script URL (zie SETUP-GOOGLE-SHEET.md)
+            sheet_api: '',
+        };
 
-    btn.disabled    = true;
-    btn.textContent = '⏳ Bezig met verzenden...';
-    status.textContent = '';
+        // ──────────────────────────────────────────
+        // COLLEAGUES
+        // ──────────────────────────────────────────
+        const COLLEAGUES = [
+            { naam: 'Walter Van Hecke', email: 'walter.vanhecke@involv-intranet.com' },
+            { naam: 'Tim Bogemans', email: 'tim.bogemans@involv-intranet.com' },
+            { naam: 'Louis Vanderschueren', email: 'louis.vanderschueren@involv-intranet.com' },
+            { naam: 'Anouk Marit', email: 'anouk.marit@involv-intranet.com' },
+            { naam: 'Thy Tran', email: 'Thy.Tran@involv-intranet.com' },
+            { naam: 'Pieter Lippens', email: 'pieter.lippens@involv-intranet.com' },
+            { naam: 'Magnus Van Driessche', email: 'magnus.vandriessche@involv-intranet.com' },
+            { naam: 'Arnaud Deleu', email: 'arnaud.deleu@involv-intranet.com' },
+            { naam: 'Nathalie Juwet', email: 'nathalie.juwet@involv-intranet.com' },
+            { naam: 'Tommy Vanhee', email: 'tommy.vanhee@involv-intranet.com' },
+            { naam: 'Senne De Wever', email: 'senne.dewever@involv-intranet.com' },
+            { naam: 'Jim Houtman', email: 'jim.houtman@involv-intranet.com' },
+            { naam: 'Elio Struyf', email: 'Elio.Struyf@involv-intranet.com' },
+            { naam: 'Aman Tripathi', email: 'aman.tripathi@involv-intranet.com' },
+            { naam: 'Dmitriy Van der Elst', email: 'dmitriy.vanderelst@involv-intranet.com' },
+            { naam: 'Luna Heyman', email: 'luna.heyman@involv-intranet.com' },
+            { naam: 'Lien Van Roij', email: 'Lien.VanRoij@involv-intranet.com' },
+            { naam: 'Pascal Herreweghe', email: 'pascal.herreweghe@involv-intranet.com' },
+            { naam: 'Davy Paeleman', email: 'davy.paeleman@involv-intranet.com' },
+            { naam: 'David Sybers', email: 'david.sybers@involv-intranet.com' },
+            { naam: 'Marijn Somers', email: 'marijn.somers@involv-intranet.com' },
+            { naam: 'Jonas Van Obbergen', email: 'jonas.vanobbergen@involv-intranet.com' },
+            { naam: 'Lars Nolmans', email: 'lars.nolmans@involv-intranet.com' },
+            { naam: 'Willem Sunaert', email: 'willem.sunaert@involv-intranet.com' },
+            { naam: 'Nancy Lockkamper', email: 'nancy.lockkamper@involv-intranet.com' },
+            { naam: 'Riet Van Dooren', email: 'administration@CognIT.be' },
+        ];
 
-    const orderParams = {
-        to_email:   CFG.email,
-        from_naam:  o.naam,
-        from_email: o.emailVan || '',
-        datum:      o.datum,
-        bestelling: o.orderTxt,
-        totaal:     '€ ' + o.tot.toFixed(2).replace('.', ','),
-        iban:       CFG.iban,
-    };
+        // ──────────────────────────────────────────
+        // MENU DATA
+        // ──────────────────────────────────────────
+        const MENU = [
+            {
+                id: 'warm',
+                tab: '🔥 Warm',
+                title: 'Warme Broodjes – Provencette / Panini',
+                note: null,
+                items: [
+                    { id: 'w1', n: 'Kaas – mozzarella – tomaat – kruiden', p: 5.30 },
+                    { id: 'w2', n: 'Hesp – philadelphia – honing – kruiden – tomaat', p: 5.80 },
+                    { id: 'w3', n: 'Kaas – brie – mozzarella – ananas – kruiden', p: 5.80 },
+                    { id: 'w4', n: 'Gehaktbal – mozzarella – tomaat – martinosaus', p: 6.00 },
+                    { id: 'w5', n: 'Gerookte hesp – mozzarella – tomaat – pesto', p: 6.80 },
+                    { id: 'w6', n: 'Gerookte zalm – philadelphia – tomaat – kruiden', p: 7.00 },
+                    { id: 'w7', n: 'Kaas – hesp – tomaat of ananas – kruiden', p: 5.30 },
+                    { id: 'w8', n: 'Gehaktbal – gedroogde uitjes – 3 bicky sauzen', p: 6.00 },
+                    { id: 'w9', n: 'Pizza Prosciutto', p: 3.80 },
+                ]
+            },
+            {
+                id: 'vlees',
+                tab: '🥩 Vlees',
+                title: 'Broodjes met Vlees',
+                note: null,
+                items: [
+                    { id: 'v1', n: 'BEATLE', d: 'gehaktbal – sla – tomaat – wortel – mayo', p: 4.50 },
+                    { id: 'v2', n: 'BOLLEKE', d: 'gehaktbal – augurk – verse ui – mayo & ketchup', p: 4.50 },
+                    { id: 'v3', n: 'BOLERO', d: 'gehaktbal – sla – zilverui – wortel – mayo & martinosaus', p: 4.50 },
+                    { id: 'v4', n: 'BOLUS', d: 'gehaktbal – verse ui – tuinkers – andalousesaus', p: 4.50 },
+                    { id: 'v5', n: 'BICKY', d: 'gehaktbal – augurk – gedroogde ui – 3 bicky sauzen', p: 5.00 },
+                    { id: 'v6', n: 'BALLEKE BACON', d: 'gehaktbal – sneetjes bacon – gedroogde ui – cocktailsaus', p: 5.00 },
+                    { id: 'v7', n: 'VLEESSALADE', d: 'vleessalade – sla – tomaat – wortel', p: 4.50 },
+                    { id: 'v8', n: 'PITA PIKANT', d: 'pita pikant – sla – tomaat – wortel', p: 4.50 },
+                    { id: 'v9', n: 'BIKINI', d: 'préparé – augurk – gedroogde uitjes – 3 bicky sauzen', p: 5.00 },
+                    { id: 'v10', n: 'CLUB', d: 'préparé – sla – tomaat – wortel – ei – mayo', p: 4.50 },
+                    { id: 'v11', n: 'SUPER CLUB', d: 'préparé – sla – tomaat – wortel – ei – augurk – verse/zilverui – mayo', p: 5.00 },
+                    { id: 'v12', n: 'MARTINO', d: 'préparé – augurk – verse ui – tomaat – martinosaus', p: 4.50 },
+                    { id: 'v13', n: 'SUPER MARTINO', d: 'préparé – augurk – verse ui – tomaat – sla – wortel – martinosaus', p: 5.00 },
+                    { id: 'v14', n: 'SPECIAL', d: 'hesp – sla – tomaat – wortel – ei – mayo', p: 4.30 },
+                    { id: 'v15', n: 'SUPER SPECIAL', d: 'hesp – sla – tomaat – wortel – ei – augurk – verse/zilverui – mayo', p: 4.80 },
+                    { id: 'v16', n: 'SALAMI', d: 'salami – sla – tomaat – wortel – mayo', p: 4.50 },
+                    { id: 'v17', n: 'ROSBIEF', d: 'rosbief – sla – tomaat – wortel – mayo – peper', p: 5.30 },
+                    { id: 'v18', n: 'ARGENTEUIL', d: 'rosbief – zilverui – augurk – mosterd – peper', p: 5.30 },
+                    { id: 'v19', n: 'ITALIANO', d: 'gerookte hesp – tomaat – peper – basilicumolie', p: 5.00 },
+                    { id: 'v20', n: 'PITA (warm)', d: 'pita vlees – groenten – saus naar keuze', p: 5.00 },
+                    { id: 'v21', n: 'MEXICANO', d: 'mexicano – verse ui – mayo & ketchup', p: 5.00 },
+                    { id: 'v22', n: 'MEXICANO CHEESE', d: 'mexicano – kaas – gedroogde ui – tomaat – sla – saus naar keuze', p: 6.00 },
+                    { id: 'v23', n: 'MEXICANO MARTINO', d: 'mexicano – augurk – gedroogde ui – tomaat – martinosaus', p: 6.00 },
+                    { id: 'v24', n: 'MEXICANO BRIE', d: 'mexicano – brie – gedroogde ui – sla – tomaat – saus naar keuze', p: 6.50 },
+                    { id: 'v25', n: 'MEXICANO FRIET', d: 'mexicano – friet – saus naar keuze', p: 6.50 },
+                    { id: 'v26', n: 'WARM BAL GESMOLTEN KAAS', d: 'augurk – zilverui – sla – wortel – mayo & ketchup', p: 5.50 },
+                    { id: 'v27', n: 'OMELET MET SPEK', d: 'sla – tomaat – wortel – mayo', p: 4.80 },
+                    { id: 'v28', n: 'GRAND-MERE', d: 'huisgemaakt balleke – sla – tomaat – wortel – mayo', p: 5.30 },
+                    { id: 'v29', n: 'HAMBURGER', d: 'hamburger – gedroogde ui – saus naar keuze', p: 5.00 },
+                    { id: 'v30', n: 'HAMBURGER + GROENTEN', d: 'hamburger – sla – tomaat – wortel – saus naar keuze', p: 5.50 },
+                    { id: 'v31', n: 'HAMBURGER FRIET', d: 'hamburger – friet – saus naar keuze', p: 6.50 },
+                    { id: 'v32', n: 'JOPPIE', d: 'gehaktbal – gedroogde ui – joppie-saus', p: 5.00 },
+                    { id: 'v33', n: 'BOMMEKE', d: 'gehaktbal – preparé – sneetjes kaas – 3 bicky sauzen – gedroogde ui', p: 6.00 },
+                ]
+            },
+            {
+                id: 'kaas',
+                tab: '🧀 Kaas',
+                title: 'Broodjes met Kaas',
+                note: null,
+                items: [
+                    { id: 'k1', n: 'ROMA', d: 'mozzarella – pesto – zongedroogde tomaten – peper', p: 5.30 },
+                    { id: 'k2', n: 'CHEESE', d: 'kaas – sla – tomaat – wortel – ei – mayo', p: 4.30 },
+                    { id: 'k3', n: 'SUPER CHEESE', d: 'kaas – sla – tomaat – wortel – ei – augurk – zilverui/verse ui – mayo', p: 4.80 },
+                    { id: 'k4', n: 'PHILADELPHIA', d: 'philadelphia – sla – tomaat – wortel', p: 4.30 },
+                    { id: 'k5', n: 'PHILADELPHIA VERSE UI', d: 'philadelphia – verse ui – tomaat – peper – kruiden', p: 4.50 },
+                    { id: 'k6', n: 'BOURSIN', d: 'boursin – sla – tomaat – wortel', p: 4.30 },
+                    { id: 'k7', n: 'BRIE', d: 'brie – sla – tomaat – wortel – boter', p: 5.00 },
+                    { id: 'k8', n: 'BRIE HONING', d: 'brie – honing – tuinkers – peper – boter', p: 5.30 },
+                    { id: 'k9', n: 'SWEETY', d: 'brie – vruchtenconfituur – peper – boter – nootjes of rozijn', p: 5.30 },
+                    { id: 'k10', n: 'MOZZARELLA', d: 'mozzarella – tomaat – basilicumolie – peper', p: 5.00 },
+                ]
+            },
+            {
+                id: 'kaasv',
+                tab: '🥪 Kaas & Vlees',
+                title: 'Broodjes met Kaas & Vlees',
+                note: null,
+                items: [
+                    { id: 'kv1', n: 'SMOS', d: 'kaas – hesp – sla – tomaat – wortel – ei – mayo', p: 4.50 },
+                    { id: 'kv2', n: 'SUPER SMOS', d: 'kaas – hesp – sla – tomaat – wortel – ei – augurk – ui/zilverui – mayo', p: 5.00 },
+                    { id: 'kv3', n: 'TWISTER', d: 'kaas – hesp – sla – wortel – ei – zilverui – cocktailsaus & mosterd', p: 4.80 },
+                    { id: 'kv4', n: 'TRICOLOR', d: 'kaas – hesp – salami – sla – tomaat – wortel – ei – mayo', p: 4.80 },
+                    { id: 'kv5', n: 'SUPER TRICOLOR', d: 'kaas – hesp – salami – sla – tomaat – wortel – ei – augurk – ui/zilverui – mayo', p: 5.30 },
+                    { id: 'kv6', n: 'B-H-V', d: 'hesp – boursin – verse ui – tuinkers – peper', p: 5.30 },
+                    { id: 'kv7', n: 'MAISON', d: 'gerookte hesp – mozzarella – tomaat – basilicumolie – peper', p: 5.50 },
+                    { id: 'kv8', n: 'MAISON ZONGEDROOGDE', d: 'gerookte hesp – mozzarella – zongedroogde tomaten – basilicumolie – peper', p: 5.80 },
+                    { id: 'kv9', n: 'MADONNA', d: 'gerookte hesp – brie – zongedroogde tomaten – tuinkers – balsamicocrème – peper', p: 6.80 },
+                    { id: 'kv10', n: 'MEDITERAAN', d: 'gerookte hesp – zongedroogde tomaten – tuinkers – parmezaanschilfers – peper – basilicumolie', p: 6.30 },
+                    { id: 'kv11', n: 'ARCHIDUC', d: 'rosbief – zongedroogde tomaten – tuinkers – parmezaanschilfers – peper – basilicumolie', p: 6.50 },
+                    { id: 'kv12', n: 'TROPICAL', d: 'kaas – hesp – ananas – cocktailsaus', p: 4.50 },
+                ]
+            },
+            {
+                id: 'kip',
+                tab: '🍗 Kip',
+                title: 'Broodjes met Kip',
+                note: null,
+                items: [
+                    { id: 'ki1', n: 'KIP CURRY', d: 'kip in currysaus – sla – tomaat – wortel', p: 4.50 },
+                    { id: 'ki2', n: 'KIP HAWAI', d: 'kip in cocktailsaus – sla – tomaat – wortel', p: 4.50 },
+                    { id: 'ki3', n: 'KIP SAMOERAï', d: 'kip in samoeraïsaus – sla – tomaat – wortel', p: 4.50 },
+                    { id: 'ki4', n: 'KIPFILET', d: 'kipfilet – sla – tomaat – wortel – mayo', p: 4.50 },
+                    { id: 'ki5', n: 'BAHAMA', d: 'kipfilet – sla – wortel – ananas – cocktailsaus', p: 4.50 },
+                    { id: 'ki6', n: 'BOURSIN-KIP', d: 'kipfilet – boursin – tomaat – verse ui – kruiden – peper', p: 5.00 },
+                    { id: 'ki7', n: 'WARME KIP', d: 'warme kippenblokjes – tuinkers – ananas – cocktailsaus', p: 5.00 },
+                    { id: 'ki8', n: 'HOT CHICA', d: 'warme kippenblokjes – gedroogde ui – augurk – BBQ saus', p: 5.00 },
+                    { id: 'ki9', n: 'TOSCAANSE KIP', d: 'warme kippenblokjes – gedroogde ui – wortel – rucola – toscaanse saus', p: 5.50 },
+                ]
+            },
+            {
+                id: 'vis',
+                tab: '🐟 Vis',
+                title: 'Broodjes met Vis',
+                note: null,
+                items: [
+                    { id: 'vi1', n: 'TONIJN', d: 'tonijnsalade – sla – tomaat – wortel', p: 4.50 },
+                    { id: 'vi2', n: 'TONIJN COCKTAIL', d: 'tonijn in cocktailsaus – sla – tomaat – wortel', p: 4.50 },
+                    { id: 'vi3', n: 'TONIJN PIKANT', d: 'tonijnpikant salade – sla – tomaat – wortel', p: 4.50 },
+                    { id: 'vi4', n: 'TONIJN PERZIK', d: 'tonijnsalade – schijfjes perzik', p: 4.50 },
+                    { id: 'vi5', n: 'TONIJNTINO', d: 'tonijnsalade – verse ui – tomaat – augurk – ansjovis – tabasco/martinosaus', p: 4.80 },
+                    { id: 'vi6', n: 'KRAB', d: 'surimisalade – sla – tomaat – wortel', p: 4.80 },
+                    { id: 'vi7', n: 'GEROOKTE ZALM', d: 'gerookte zalm – verse ui – cocktailsaus', p: 5.80 },
+                    { id: 'vi8', n: 'BOURSIN-ZALM', d: 'gerookte zalm – boursin – verse ui – tuinkers – peper', p: 6.50 },
+                    { id: 'vi9', n: 'V.I.P.', d: 'gerookte zalm – philadelphia – sla – tomaat – wortel – peper', p: 6.50 },
+                    { id: 'vi10', n: 'MARYLIN', d: 'gerookte zalm – brie – zongedroogde tomaten – tuinkers – basilicumolie – peper – balsamicocrème', p: 7.00 },
+                    { id: 'vi11', n: 'LIBERTAS', d: 'tonijnsalade – parmezaan – tuinkers – dressing', p: 5.00 },
+                    { id: 'vi12', n: 'TMP', d: 'tonijnsalade – tomaat – verse ui – augurk – balleke – sneetjes kaas – ansjovis – martinosaus', p: 6.00 },
+                ]
+            },
+            {
+                id: 'gezond',
+                tab: '🥗 Gezond',
+                title: 'Broodjes Gezond',
+                note: '!! Gehakt enkel op donderdag en vrijdag !!',
+                items: [
+                    { id: 'ge1', n: 'GEZOND', d: 'sla – tomaat – wortel – ei – augurk – mayo of dressing', p: 4.00 },
+                    { id: 'ge2', n: 'SUPER GEZOND', d: 'sla – tomaat – wortel – ei – augurk – tuinkers – verse/zilverui – mayo of dressing', p: 4.50 },
+                    { id: 'ge3', n: 'GEHAKT (do/vr)', d: 'gehakt – sla – tomaat – wortel – saus naar keuze', p: 5.30 },
+                    { id: 'ge4', n: 'GEHAKT PICKLES (do/vr)', d: 'gehakt – pickles saus', p: 5.00 },
+                ]
+            },
+            {
+                id: 'slaat',
+                tab: '🥙 Slaatjes',
+                title: 'Slaatjes',
+                note: 'Basis: sla, wortel, tomaat, augurk, ei, zilverui, tuinkers, ananas, perzik, verse ui. Brood en saus inbegrepen.',
+                items: [
+                    { id: 'sl1', n: 'VEGGIE', d: 'basis salade', p: 8.00 },
+                    { id: 'sl2', n: 'TONIJN NATUUR', p: 10.00 },
+                    { id: 'sl3', n: 'TONIJN MET PERZIK', p: 10.00 },
+                    { id: 'sl4', n: 'VLEES', d: 'salami, hesp, kipfilet', p: 10.00 },
+                    { id: 'sl5', n: 'KIPFILET', d: 'sneetjes of blokjes', p: 10.00 },
+                    { id: 'sl6', n: 'GEROOKTE ZALM', p: 12.00 },
+                    { id: 'sl7', n: 'GEROOKTE HESP', p: 12.00 },
+                    { id: 'sl8', n: 'MOZZARELLA + ZONGEDROOGDE TOMATEN', p: 10.00 },
+                ]
+            },
+            {
+                id: 'pasta',
+                tab: '🍝 Pasta',
+                title: 'Pasta Bekers',
+                note: 'Pasta enkel op bestelling – doorgeven dag voordien vóór 14:00!',
+                items: [
+                    { id: 'pa1', n: 'Bolognaise Medium', p: 7.00 },
+                    { id: 'pa2', n: 'Bolognaise Large', p: 9.00 },
+                    { id: 'pa3', n: 'Extra potje kaas', p: 1.00 },
+                ]
+            },
+            {
+                id: 'soep',
+                tab: '🍲 Soep',
+                title: 'Dagelijkse Verse Soep',
+                note: null,
+                items: [
+                    { id: 'so1', n: 'Verse soep 0,5L + brood', p: 4.50 },
+                ]
+            },
+            {
+                id: 'lekker',
+                tab: '🍩 Zoet',
+                title: 'Lekkerbekjes & Zoetjes',
+                note: 'Ontbijtkoeken enkel op bestelling – doorgeven dag voordien vóór 14:00.',
+                items: [
+                    { id: 'le1', n: 'Broodje Nutella', p: 3.00 },
+                    { id: 'le2', n: 'Broodje Confituur', p: 3.00 },
+                    { id: 'le3', n: 'Broodje Nutella + Kaas', p: 4.00 },
+                    { id: 'le4', n: 'Rijsttaartje', p: 3.00 },
+                    { id: 'le5', n: 'Worstenbroodje', p: 3.00 },
+                    { id: 'le6', n: 'Chocoladekoek / Croissant', p: 1.80 },
+                    { id: 'le7', n: 'Donut', p: 2.00 },
+                    { id: 'le8', n: 'Muffin / Brownie', p: 2.80 },
+                    { id: 'le9', n: 'Huisgemaakt balleke', p: 3.00 },
+                    { id: 'le10', n: 'Warme suikerwafel', p: 2.50 },
+                ]
+            },
+        ];
 
-    // 1) Mail naar Louis
-    emailjs.send(CFG.ejs_service_id, CFG.ejs_template_id, orderParams)
-    .then(() => {
-        // 2) Bevestigingsmail naar collega (alleen als e-mail ingevuld)
-        const sends = [];
-        if (o.emailVan) {
-            sends.push(emailjs.send(CFG.ejs_service_id, CFG.ejs_confirm_template_id, {
-                to_email:   o.emailVan,
-                from_naam:  o.naam,
-                datum:      o.datum,
-                bestelling: o.orderTxt,
-                totaal:     '€ ' + o.tot.toFixed(2).replace('.', ','),
-                deadline:   CFG.deadline,
-            }));
+        // ──────────────────────────────────────────
+        // STATE
+        // ──────────────────────────────────────────
+        const cart = {};
+
+        // ──────────────────────────────────────────
+        // ADMIN MODE CHECK
+        // ──────────────────────────────────────────
+        const IS_ADMIN = new URLSearchParams(window.location.search).has('admin');
+        if (IS_ADMIN) {
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('mainUI').style.display = 'none';
+            document.getElementById('cartFab').style.display = 'none';
         }
-        return Promise.all(sends);
-    })
-    .then(() => {
-        btn.textContent      = '✅ Bestelling verzonden!';
-        btn.style.background = '#4CAF50';
-        status.style.color   = '#2E7D32';
-        status.textContent   = o.emailVan
-            ? 'Louis ontvangt jouw bestelling. Jij krijgt ook een bevestiging per mail.'
-            : 'Louis ontvangt jouw bestelling per mail.';
-        window._pendingOrder = null;
-    })
-    .catch((err) => {
-        btn.disabled         = false;
-        btn.textContent      = '📧 Bestelling bevestigen & doorsturen';
-        status.style.color   = '#C62828';
-        status.textContent   = 'Verzenden mislukt — probeer WhatsApp als alternatief.';
-        console.error('EmailJS fout:', err);
-    });
-}
 
-// ─────────────────────────────────────────────
-//  INIT
-// ─────────────────────────────────────────────
-emailjs.init({ publicKey: CFG.ejs_public_key });
-buildColleagueSelect();
-buildMenu();
-refreshFab();
+        // ──────────────────────────────────────────
+        // ADMIN: Order Storage (localStorage)
+        // ──────────────────────────────────────────
+        function adminGetOrders() {
+            try {
+                return JSON.parse(localStorage.getItem('baguetje_orders') || '[]');
+            } catch { return []; }
+        }
 
-// ── Besteldag check ──
-const DAGEN = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
+        function adminSaveOrders(orders) {
+            localStorage.setItem('baguetje_orders', JSON.stringify(orders));
+        }
 
-// Gesloten = maandag 13:00 → dinsdag 15:00, rest van de week open
-function tijdAlsMinuten(dag, uur, min) {
-    return dag * 1440 + uur * 60 + min;
-}
+        function adminAddOrder() {
+            const naam = document.getElementById('adminNaam').value.trim();
+            const items = document.getElementById('adminItems').value.trim();
+            const totaal = parseFloat(document.getElementById('adminTotaal').value) || 0;
+            if (!naam || !items) {
+                alert('Vul naam en bestelling in!');
+                return;
+            }
+            const orders = adminGetOrders();
+            orders.push({ naam, items, totaal, ts: Date.now() });
+            adminSaveOrders(orders);
+            document.getElementById('adminNaam').value = '';
+            document.getElementById('adminItems').value = '';
+            document.getElementById('adminTotaal').value = '';
+            adminRender();
+        }
 
-function isBestellingOpen() {
-    const now = new Date();
-    const t   = tijdAlsMinuten(now.getDay(), now.getHours(), now.getMinutes());
-    const sluit = tijdAlsMinuten(CFG.sluit_dag, CFG.sluit_uur, CFG.sluit_min);
-    const open  = tijdAlsMinuten(CFG.open_dag,  CFG.open_uur,  CFG.open_min);
-    // Gesloten als t >= sluit EN t < open
-    return !(t >= sluit && t < open);
-}
+        function adminDeleteOrder(idx) {
+            const orders = adminGetOrders();
+            orders.splice(idx, 1);
+            adminSaveOrders(orders);
+            adminRender();
+        }
 
-function volgendeOpeningTekst() {
-    const now = new Date();
-    const t   = tijdAlsMinuten(now.getDay(), now.getHours(), now.getMinutes());
-    const open = tijdAlsMinuten(CFG.open_dag, CFG.open_uur, CFG.open_min);
+        function adminClearAll() {
+            if (confirm('Alle bestellingen wissen?')) {
+                adminSaveOrders([]);
+                adminRender();
+                document.getElementById('adminResult').style.display = 'none';
+            }
+        }
 
-    let diff = CFG.open_dag - now.getDay();
-    if (diff < 0 || (diff === 0 && t >= open)) diff += 7;
-    const volgende = new Date(now);
-    volgende.setDate(volgende.getDate() + diff);
-    const d = volgende.getDate();
-    const m = volgende.getMonth() + 1;
-    const uu = String(CFG.open_uur).padStart(2,'0');
-    const mm = String(CFG.open_min).padStart(2,'0');
-    return `${DAGEN[CFG.open_dag]} ${d}/${m} om ${uu}:${mm}`;
-}
+        function adminRender() {
+            const orders = adminGetOrders();
+            const container = document.getElementById('adminOrders');
+            const grandTotalEl = document.getElementById('adminGrandTotal');
 
-function checkBestelStatus() {
-    const banner = document.getElementById('closedBanner');
-    if (!isBestellingOpen()) {
-        banner.innerHTML = `⛔ Bestellingen zijn gesloten<small>Weer open: ${volgendeOpeningTekst()}</small>`;
-        banner.style.display = 'block';
-    } else {
-        banner.style.display = 'none';
-    }
-}
+            if (orders.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:var(--muted);padding:20px;">Nog geen bestellingen toegevoegd.</p>';
+                grandTotalEl.style.display = 'none';
+                return;
+            }
 
-checkBestelStatus();
-// Hercheck elke minuut
-setInterval(checkBestelStatus, 60000);
-</script>
+            const grandTotal = orders.reduce((s, o) => s + (o.totaal || 0), 0);
+            grandTotalEl.style.display = 'block';
+            grandTotalEl.innerHTML = `${orders.length} bestelling${orders.length > 1 ? 'en' : ''} — Totaal: € ${fmt(grandTotal)}`;
+
+            let html = '';
+            orders.forEach((o, i) => {
+                html += `<div class="admin-order-card">
+                    <div class="order-header">
+                        <span class="order-naam">${o.naam}</span>
+                        <span class="order-totaal">€ ${fmt(o.totaal || 0)}</span>
+                    </div>
+                    <div class="order-items">${o.items}</div>
+                    <button class="order-delete" onclick="adminDeleteOrder(${i})">Verwijder</button>
+                </div>`;
+            });
+            html += `<div style="text-align:center;margin-top:8px;">
+                <button onclick="adminClearAll()" style="background:none;border:none;color:#E53935;font-size:0.8rem;cursor:pointer;text-decoration:underline;">Alles wissen</button>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        function adminGenerateMail() {
+            const orders = adminGetOrders();
+            if (orders.length === 0) {
+                alert('Voeg eerst bestellingen toe!');
+                return;
+            }
+
+            const datum = new Date().toLocaleDateString('nl-BE');
+            const nextTuesday = getNextDeliveryDate();
+            let text = `Beste,\n\nHierbij onze broodjesbestelling voor ${nextTuesday}.\n\n`;
+            text += `Bedrijf: CognIT/Involv\nContactpersoon: Louis Vanderschueren\n\n`;
+            text += `───────────────────────\n`;
+
+            orders.forEach((o, i) => {
+                text += `\n${o.naam}:\n`;
+                text += o.items.split('\n').map(line => `  ${line}`).join('\n');
+                text += `\n`;
+            });
+
+            const grandTotal = orders.reduce((s, o) => s + (o.totaal || 0), 0);
+            text += `\n───────────────────────\n`;
+            text += `Totaal ${orders.length} personen — € ${fmt(grandTotal)}\n\n`;
+            text += `Bedankt!\n\nMet vriendelijke groeten,\nLouis Vanderschueren\nCognIT/Involv`;
+
+            document.getElementById('adminResultText').value = text;
+            document.getElementById('adminResult').style.display = 'block';
+
+            const subj = encodeURIComponent(`Broodjesbestelling CognIT/Involv — ${nextTuesday}`);
+            const body = encodeURIComponent(text);
+            document.getElementById('adminMailtoLink').href = `mailto:${CFG.baguetje_email}?subject=${subj}&body=${body}`;
+        }
+
+        function adminCopyText() {
+            const orders = adminGetOrders();
+            if (orders.length === 0) {
+                alert('Voeg eerst bestellingen toe!');
+                return;
+            }
+            adminGenerateMail();
+            const text = document.getElementById('adminResultText').value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Tekst gekopieerd naar klembord!');
+            }).catch(() => {
+                document.getElementById('adminResultText').select();
+            });
+        }
+
+        function getNextDeliveryDate() {
+            const now = new Date();
+            const day = now.getDay();
+            // Find next Tuesday (delivery day)
+            let diff = 2 - day;
+            if (diff <= 0) diff += 7;
+            const next = new Date(now);
+            next.setDate(next.getDate() + diff);
+            return `dinsdag ${next.getDate()}/${next.getMonth() + 1}`;
+        }
+
+        if (IS_ADMIN) {
+            fetchOrdersFromSheet(); // Haal orders op uit Google Sheet + render
+        }
+
+        // ──────────────────────────────────────────
+        // COLLEAGUE SELECTOR
+        // ──────────────────────────────────────────
+        function buildColleagueSelect() {
+            const sel = document.getElementById('colleagueSelect');
+            COLLEAGUES.forEach((c, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = c.naam;
+                sel.appendChild(opt);
+            });
+            const other = document.createElement('option');
+            other.value = 'other';
+            other.textContent = '✏️ Andere naam / e-mail...';
+            sel.appendChild(other);
+        }
+
+        function onSelectColleague() {
+            const sel = document.getElementById('colleagueSelect');
+            const val = sel.value;
+            const manual = document.getElementById('manualFields');
+            if (val === '') {
+                manual.style.display = 'none';
+                return;
+            }
+            manual.style.display = 'flex';
+            const naamEl = document.getElementById('naam');
+            const emailEl = document.getElementById('emailVan');
+            if (val === 'other') {
+                naamEl.value = '';
+                emailEl.value = '';
+                naamEl.className = '';
+                emailEl.className = '';
+                naamEl.readOnly = false;
+                emailEl.readOnly = false;
+                naamEl.focus();
+            } else {
+                const c = COLLEAGUES[parseInt(val)];
+                naamEl.value = c.naam;
+                emailEl.value = c.email;
+                naamEl.className = 'auto-filled';
+                emailEl.className = 'auto-filled';
+                naamEl.readOnly = false;
+                emailEl.readOnly = false;
+            }
+        }
+
+        function getIdentity() {
+            return {
+                naam: (document.getElementById('naam')?.value || '').trim(),
+                email: (document.getElementById('emailVan')?.value || '').trim(),
+            };
+        }
+
+        // ──────────────────────────────────────────
+        // BUILD MENU
+        // ──────────────────────────────────────────
+        function buildMenu() {
+            const tabsEl = document.getElementById('tabs');
+            const secEl = document.getElementById('sections');
+            MENU.forEach((cat, i) => {
+                const t = document.createElement('button');
+                t.className = 'tab' + (i === 0 ? ' active' : '');
+                t.textContent = cat.tab;
+                t.onclick = () => switchCat(cat.id);
+                tabsEl.appendChild(t);
+                const s = document.createElement('div');
+                s.id = 'sec-' + cat.id;
+                s.className = 'section' + (i === 0 ? ' active' : '');
+                let html = `<div class="section-title">${cat.title}</div>`;
+                if (cat.note) html += `<div class="note-box">⚠️ ${cat.note}</div>`;
+                html += '<div class="items-list">';
+                cat.items.forEach(item => {
+                    const esc = (s) => (s || '').replace(/'/g, "\\'");
+                    html += `
+                        <div class="item-card">
+                            <div class="item-text">
+                                <div class="item-name">${item.n}</div>
+                                ${item.d ? `<div class="item-desc">${item.d}</div>` : ''}
+                            </div>
+                            <div class="item-price">€ ${fmt(item.p)}</div>
+                            <div class="item-ctrl">
+                                <button class="qbtn" onclick="dec('${item.id}')">−</button>
+                                <span class="qty-num" id="q-${item.id}">0</span>
+                                <button class="qbtn" onclick="inc('${item.id}','${esc(item.n)}','${esc(item.d || '')}',${item.p})">+</button>
+                            </div>
+                        </div>`;
+                });
+                html += '</div>';
+                s.innerHTML = html;
+                secEl.appendChild(s);
+            });
+        }
+
+        function switchCat(id) {
+            document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', MENU[i].id === id));
+            document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'sec-' + id));
+            const idx = MENU.findIndex(m => m.id === id);
+            document.querySelectorAll('.tab')[idx]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+        }
+
+        // ──────────────────────────────────────────
+        // CART LOGIC
+        // ──────────────────────────────────────────
+        function inc(id, n, d, p) {
+            if (!cart[id]) cart[id] = { n, d, p, qty: 0 };
+            cart[id].qty++;
+            refreshQty(id);
+            refreshFab();
+        }
+
+        function dec(id) {
+            if (!cart[id] || cart[id].qty === 0) return;
+            cart[id].qty--;
+            if (cart[id].qty === 0) delete cart[id];
+            refreshQty(id);
+            refreshFab();
+        }
+
+        function refreshQty(id) {
+            const el = document.getElementById('q-' + id);
+            if (!el) return;
+            const qty = cart[id]?.qty || 0;
+            el.textContent = qty;
+            el.className = 'qty-num' + (qty > 0 ? ' positive' : '');
+        }
+
+        function cartItems() {
+            return Object.values(cart).filter(v => v.qty > 0);
+        }
+
+        function total() {
+            return cartItems().reduce((s, v) => s + v.p * v.qty, 0);
+        }
+
+        function itemCount() {
+            return cartItems().reduce((s, v) => s + v.qty, 0);
+        }
+
+        function fmt(n) {
+            return n.toFixed(2).replace('.', ',');
+        }
+
+        function refreshFab() {
+            if (IS_ADMIN) return;
+            const n = itemCount();
+            const fab = document.getElementById('cartFab');
+            fab.style.display = n > 0 ? 'flex' : 'none';
+            document.getElementById('fabCount').textContent = n;
+            document.getElementById('cartTotaal').textContent = '€ ' + fmt(total());
+        }
+
+        // ──────────────────────────────────────────
+        // CART MODAL
+        // ──────────────────────────────────────────
+        function openCart() {
+            const items = cartItems();
+            const el = document.getElementById('cartBody');
+            if (items.length === 0) {
+                el.innerHTML = '<div class="cart-empty-msg">Nog geen items toegevoegd.<br>Kies iets uit het menu!</div>';
+            } else {
+                let html = '';
+                items.forEach(v => {
+                    html += `<div class="cart-line">
+                        <div class="cart-line-info">
+                            <div class="cart-line-name">${v.n}</div>
+                            <div class="cart-line-sub">${v.qty}x @ €${fmt(v.p)}</div>
+                        </div>
+                        <div class="cart-line-price">€ ${fmt(v.p * v.qty)}</div>
+                    </div>`;
+                });
+                const vrij = document.getElementById('vrij').value.trim();
+                if (vrij) html += `<div class="cart-line"><div class="cart-line-info"><div class="cart-line-name">✏️ ${vrij}</div></div></div>`;
+                el.innerHTML = html;
+            }
+            document.getElementById('cartOverlay').classList.add('open');
+        }
+
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.remove('open');
+        }
+
+        // ──────────────────────────────────────────
+        // PAYMENT MODAL (IMPROVED UX)
+        // ──────────────────────────────────────────
+        function openPayment() {
+            if (!isBestellingOpen()) {
+                alert(`⛔ Bestellingen zijn gesloten.\n\nGesloten van ${DAGEN[CFG.sluit_dag]} ${CFG.sluit_uur}:00 tot ${DAGEN[CFG.open_dag]} ${CFG.open_uur}:00.\n\nWeer open: ${volgendeOpeningTekst()}`);
+                return;
+            }
+            const { naam, email: emailVan } = getIdentity();
+            if (!naam) {
+                alert('Selecteer eerst jouw naam bovenaan!');
+                closeCart();
+                document.getElementById('colleagueSelect').focus();
+                return;
+            }
+            if (itemCount() === 0) {
+                alert('Je bestelling is leeg!');
+                return;
+            }
+            const items = cartItems();
+            const tot = total();
+            const vrij = document.getElementById('vrij').value.trim();
+            const datum = new Date().toLocaleDateString('nl-BE');
+            const epcData = [
+                'BCD',
+                '002',
+                '1',
+                'SCT',
+                '',
+                CFG.naam_rek,
+                CFG.iban,
+                'EUR' + tot.toFixed(2),
+                '',
+                '',
+                'Broodje ' + naam + ' ' + datum,
+            ].join('\n');
+            let orderTxt = items.map(v => `${v.qty}x ${v.n}${v.d ? ' (' + v.d + ')' : ''} – €${fmt(v.p * v.qty)}`).join('\n');
+            if (vrij) orderTxt += '\n✏️ ' + vrij;
+            let recapHtml = items.map(v => `
+                <div class="recap-line">
+                    <span>${v.qty}× ${v.n}</span>
+                    <span style="font-weight:700">€ ${fmt(v.p * v.qty)}</span>
+                </div>`).join('');
+            if (vrij) recapHtml += `<div class="recap-line"><span>✏️ ${vrij}</span><span></span></div>`;
+            recapHtml += `<div class="recap-total"><span>Totaal</span><span>€ ${fmt(tot)}</span></div>`;
+            const waTxt = encodeURIComponent(
+                `🥖 Broodjesbestelling\nNaam: ${naam}\nDatum: ${datum}\n\n${orderTxt}\n\nTotaal: €${tot.toFixed(2)} ✅ betaald via Payconiq`
+            );
+            const waHref = `https://wa.me/${CFG.whatsapp}?text=${waTxt}`;
+            document.getElementById('payBody').innerHTML = `
+                <!-- STEP INDICATOR -->
+                <div class="step-indicator">
+                    <div class="step-dot active">1</div>
+                    <span class="step-label">Betaal</span>
+                    <span class="step-arrow">→</span>
+                    <div class="step-dot pending">2</div>
+                    <span class="step-label muted">Klik "Bestellen"</span>
+                </div>
+
+                <!-- STEP 1: BETALEN -->
+                <div class="qr-block">
+                    <h3>🏦 Stap 1 — Betaal via KBC / bankapp</h3>
+                    <div class="qr-img-wrap">
+                        <div id="qrCanvas"></div>
+                    </div>
+                    <div class="qr-amount">€ ${fmt(tot)}</div>
+                    <div class="qr-sub">Scan met KBC Mobile of andere bankapp</div>
+                    <div style="margin-top:10px;font-size:0.75rem;color:var(--muted)">
+                        IBAN: <strong>${CFG.iban}</strong><br>
+                        Mededeling: <strong>Broodje ${naam}</strong>
+                    </div>
+                </div>
+
+                <!-- ORDER RECAP -->
+                <div class="order-recap">
+                    <h3>📋 Bestelling – ${naam}</h3>
+                    ${recapHtml}
+                </div>
+
+                <!-- WARNING: MUST CLICK BESTELLEN -->
+                <div class="warning-box">
+                    <span class="warning-icon">⚠️</span>
+                    <div class="warning-title">Stap 2 — Vergeet niet te bestellen!</div>
+                    <div class="warning-text">
+                        Na het betalen <strong>moet je nog op de knop hieronder klikken</strong> om je bestelling door te sturen naar Louis. Anders weet niemand wat je besteld hebt!
+                    </div>
+                </div>
+
+                <!-- SEND BUTTONS -->
+                <div class="send-btns">
+                    <button class="main-btn pulse" id="sendMailBtn" onclick="sendOrderEmail()">📧 BESTELLING DOORSTUREN → Klik hier!</button>
+                    <a href="${waHref}" target="_blank" class="main-btn green">💬 Of doorsturen via WhatsApp</a>
+                </div>
+                <div id="mailStatus" style="text-align:center;font-size:0.85rem;margin-top:6px;min-height:20px"></div>
+                <div class="deadline-note">
+                    Bestellingen doorsturen vóór <strong>maandag 13:00</strong> — info@baguetjemeerbeke.be
+                </div>`;
+            closeCart();
+            document.getElementById('payOverlay').classList.add('open');
+            new QRCode(document.getElementById('qrCanvas'), {
+                text: epcData,
+                width: 180,
+                height: 180,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M,
+            });
+            window._pendingOrder = {
+                naam,
+                emailVan,
+                orderTxt,
+                tot,
+                datum
+            };
+        }
+
+        function closePayment() {
+            document.getElementById('payOverlay').classList.remove('open');
+            const c = document.getElementById('qrCanvas');
+            if (c) c.innerHTML = '';
+        }
+
+        ['cartOverlay', 'payOverlay'].forEach(id => {
+            document.getElementById(id).addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('open');
+            });
+        });
+
+        // ──────────────────────────────────────────
+        // EMAIL (EmailJS)
+        // ──────────────────────────────────────────
+        function sendOrderEmail() {
+            const btn = document.getElementById('sendMailBtn');
+            const status = document.getElementById('mailStatus');
+            const o = window._pendingOrder;
+            if (!o) return;
+            btn.disabled = true;
+            btn.textContent = '⏳ Bezig met verzenden...';
+            btn.classList.remove('pulse');
+            status.textContent = '';
+            const orderParams = {
+                to_email: CFG.email,
+                from_naam: o.naam,
+                from_email: o.emailVan || '',
+                datum: o.datum,
+                bestelling: o.orderTxt,
+                totaal: '€ ' + o.tot.toFixed(2).replace('.', ','),
+                iban: CFG.iban,
+            };
+            emailjs.send(CFG.ejs_service_id, CFG.ejs_template_id, orderParams)
+                .then(() => {
+                    const sends = [];
+                    if (o.emailVan) {
+                        sends.push(emailjs.send(CFG.ejs_service_id, CFG.ejs_confirm_template_id, {
+                            to_email: o.emailVan,
+                            from_naam: o.naam,
+                            datum: o.datum,
+                            bestelling: o.orderTxt,
+                            totaal: '€ ' + o.tot.toFixed(2).replace('.', ','),
+                            deadline: 'maandag 13:00',
+                        }));
+                    }
+                    return Promise.all(sends);
+                })
+                .then(() => {
+                    btn.textContent = '✅ Bestelling verzonden!';
+                    btn.style.background = '#4CAF50';
+                    status.style.color = '#2E7D32';
+                    status.textContent = o.emailVan ? 'Louis ontvangt jouw bestelling. Jij krijgt ook een bevestiging per mail.' : 'Louis ontvangt jouw bestelling per mail.';
+
+                    // Update step indicator to show completion
+                    const dots = document.querySelectorAll('.step-dot');
+                    const labels = document.querySelectorAll('.step-label');
+                    if (dots[0]) { dots[0].classList.remove('active'); dots[0].classList.add('done'); dots[0].textContent = '✓'; }
+                    if (dots[1]) { dots[1].classList.remove('pending'); dots[1].classList.add('done'); dots[1].textContent = '✓'; }
+                    if (labels[1]) labels[1].classList.remove('muted');
+
+                    // Sla bestelling ook op in Google Sheet
+                    saveOrderToSheet(o);
+
+                    window._pendingOrder = null;
+                })
+                .catch((err) => {
+                    btn.disabled = false;
+                    btn.textContent = '📧 BESTELLING DOORSTUREN → Klik hier!';
+                    btn.classList.add('pulse');
+                    status.style.color = '#C62828';
+                    status.textContent = 'Verzenden mislukt — probeer WhatsApp als alternatief.';
+                    console.error('EmailJS error:', err);
+                });
+        }
+
+        // ──────────────────────────────────────────
+        // GOOGLE SHEET SYNC
+        // ──────────────────────────────────────────
+        function saveOrderToSheet(o) {
+            if (!CFG.sheet_api) return;
+            fetch(CFG.sheet_api, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    naam: o.naam,
+                    email: o.emailVan || '',
+                    bestelling: o.orderTxt,
+                    totaal: o.tot,
+                    datum: o.datum,
+                }),
+            }).catch(err => console.warn('Sheet save failed:', err));
+        }
+
+        function fetchOrdersFromSheet() {
+            if (!CFG.sheet_api) {
+                // Geen API geconfigureerd — gebruik localStorage als fallback
+                adminRender();
+                return;
+            }
+            const statusEl = document.getElementById('adminGrandTotal');
+            statusEl.style.display = 'block';
+            statusEl.innerHTML = '⏳ Bestellingen ophalen...';
+
+            fetch(CFG.sheet_api + '?t=' + Date.now())
+                .then(r => r.json())
+                .then(data => {
+                    if (data.orders && data.orders.length > 0) {
+                        // Merge sheet orders into localStorage (dedup by timestamp)
+                        const existing = adminGetOrders();
+                        const existingKeys = new Set(existing.map(o => o.naam + '|' + o.items));
+                        let added = 0;
+                        data.orders.forEach(o => {
+                            const key = o.naam + '|' + o.bestelling;
+                            if (!existingKeys.has(key)) {
+                                existing.push({
+                                    naam: o.naam,
+                                    items: o.bestelling,
+                                    totaal: parseFloat(o.totaal) || 0,
+                                    ts: new Date(o.timestamp).getTime() || Date.now(),
+                                    fromSheet: true,
+                                });
+                                existingKeys.add(key);
+                                added++;
+                            }
+                        });
+                        if (added > 0) adminSaveOrders(existing);
+                    }
+                    adminRender();
+                })
+                .catch(err => {
+                    console.warn('Sheet fetch failed:', err);
+                    adminRender(); // Fallback to localStorage
+                });
+        }
+
+        // ──────────────────────────────────────────
+        // INIT
+        // ──────────────────────────────────────────
+        emailjs.init({ publicKey: CFG.ejs_public_key });
+        buildColleagueSelect();
+        buildMenu();
+        refreshFab();
+
+        const DAGEN = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+
+        function tijdAlsMinuten(dag, uur, min) {
+            return dag * 1440 + uur * 60 + min;
+        }
+
+        function isBestellingOpen() {
+            const now = new Date();
+            const t = tijdAlsMinuten(now.getDay(), now.getHours(), now.getMinutes());
+            const sluit = tijdAlsMinuten(CFG.sluit_dag, CFG.sluit_uur, CFG.sluit_min);
+            const open = tijdAlsMinuten(CFG.open_dag, CFG.open_uur, CFG.open_min);
+            return !(t >= sluit && t < open);
+        }
+
+        function volgendeOpeningTekst() {
+            const now = new Date();
+            const t = tijdAlsMinuten(now.getDay(), now.getHours(), now.getMinutes());
+            const open = tijdAlsMinuten(CFG.open_dag, CFG.open_uur, CFG.open_min);
+            let diff = CFG.open_dag - now.getDay();
+            if (diff < 0 || (diff === 0 && t >= open)) diff += 7;
+            const volgende = new Date(now);
+            volgende.setDate(volgende.getDate() + diff);
+            const d = volgende.getDate();
+            const m = volgende.getMonth() + 1;
+            const uu = String(CFG.open_uur).padStart(2, '0');
+            const mm = String(CFG.open_min).padStart(2, '0');
+            return `${DAGEN[CFG.open_dag]} ${d}/${m} om ${uu}:${mm}`;
+        }
+
+        function checkBestelStatus() {
+            const banner = document.getElementById('closedBanner');
+            if (!isBestellingOpen()) {
+                banner.innerHTML = `⛔ Bestellingen zijn gesloten<small>Weer open: ${volgendeOpeningTekst()}</small>`;
+                banner.style.display = 'block';
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+
+        checkBestelStatus();
+        setInterval(checkBestelStatus, 60000);
+    </script>
 </body>
 </html>
