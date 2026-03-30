@@ -1033,7 +1033,8 @@
             ejs_confirm_template_id: 'template_fxxz3m4',
             baguetje_email: 'info@baguetjemeerbeke.be',
             // ⬇️ Plak hier jouw Google Apps Script URL (zie SETUP-GOOGLE-SHEET.md)
-            sheet_api: '',
+            sheet_api: 'https://script.google.com/macros/s/AKfycbxHj4QHVrITD-MD1iFwX_0UUa3FTLmPanXqmLqa1G2VEy9j3-5eEko3Tlcg7LIrMubeCw/exec',
+
         };
 
         // ──────────────────────────────────────────
@@ -1865,10 +1866,10 @@
         // ──────────────────────────────────────────
         // INIT
         // ──────────────────────────────────────────
-        emailjs.init({ publicKey: CFG.ejs_public_key });
-        buildColleagueSelect();
+              buildColleagueSelect();
         buildMenu();
         refreshFab();
+        try { emailjs.init({ publicKey: CFG.ejs_public_key }); } catch(e) { console.warn('EmailJS not loaded', e); }
 
         const DAGEN = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
 
